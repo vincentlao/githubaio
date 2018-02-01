@@ -1,4 +1,4 @@
-package com.laoning.githubaio.repository.converter;
+package com.laoning.githubaio.repository.local.base;
 
 import android.arch.persistence.room.TypeConverter;
 import java.util.Date;

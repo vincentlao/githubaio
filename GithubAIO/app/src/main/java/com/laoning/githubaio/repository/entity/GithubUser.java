@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
-import com.laoning.githubaio.repository.converter.DateConverter;
+import com.laoning.githubaio.repository.local.base.DateConverter;
 
 import java.util.Date;
 
