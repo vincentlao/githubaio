@@ -1,9 +1,12 @@
-package com.laoning.githubaio;
+package com.laoning.githubaio.ui.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.laoning.githubaio.R;
+import com.laoning.githubaio.ui.common.BaseActivity;
+
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
