@@ -22,8 +22,10 @@ public class AccountRepository {
     private GithubDatabase githubDatabase;
     private GithubService githubService;
 
-    public AccountRepository() {
-
+    @Inject
+    public AccountRepository(GithubDatabase githubDatabase, GithubService githubService) {
+        this.githubDatabase = githubDatabase;
+        this.githubService = githubService;
     }
 
     public LiveData<GithubAccount> getFirstAccount() {

@@ -1,10 +1,10 @@
 package com.laoning.githubaio.di.module;
 
-import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
+import android.arch.persistence.room.Room;
 
 import com.laoning.githubaio.GithubAioApp;
 import com.laoning.githubaio.repository.AccountRepository;
+import com.laoning.githubaio.repository.local.GithubDatabase;
 import com.laoning.githubaio.repository.remote.GithubService;
 
 import javax.inject.Singleton;
@@ -19,20 +19,8 @@ import com.laoning.githubaio.repository.remote.base.LiveDataCallAdapterFactory;
  * Created by laoni on 2018-2-1.
  */
 
-@Module
+@Module(includes = ViewModelModule.class)
 public class AppModule {
-
-    private GithubAioApp application;
-
-    public AppModule(GithubAioApp application) {
-        this.application = application;
-    }
-
-    @Provides
-    @Singleton
-    public GithubAioApp provideApplication() {
-        return application;
-    }
 
     @Singleton @Provides
     GithubService provideGithubService() {
@@ -44,11 +32,15 @@ public class AppModule {
                 .create(GithubService.class);
     }
 
-
-    @NonNull
     @Provides
     @Singleton
-    public AccountRepository provideAccountRepository() {
-        return null;
+    public GithubDatabase provideGithubDatabase(GithubAioApp app) {
+        return Room.databaseBuilder(app, GithubDatabase.class,"github_aio.db").build();
+    }
+
+    @Provides
+    @Singleton
+    public AccountRepository provideAccountRepository(GithubDatabase githubDatabase, GithubService githubService) {
+        return new AccountRepository(githubDatabase, githubService);
     }
 }
