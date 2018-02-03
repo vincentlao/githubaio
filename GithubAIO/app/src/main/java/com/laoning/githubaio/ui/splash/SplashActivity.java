@@ -5,11 +5,10 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.laoning.githubaio.GithubAioApp;
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.repository.entity.GithubAccount;
 import com.laoning.githubaio.ui.common.BaseActivity;
@@ -20,7 +19,6 @@ import com.laoning.githubaio.viewmodel.AccountViewModel;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import dagger.android.support.AndroidSupportInjection;
 
 /**
  * Created by laoning on 01/02/2018.
@@ -49,7 +47,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void loadUser() {
-        LiveData<GithubAccount> accountLiveData = accountViewModel.getFirstAccount();
+        LiveData<GithubAccount> accountLiveData = accountViewModel.getFirstAccountLocally();
 
         accountLiveData.observe(this, account -> {
             if (account == null) {
@@ -61,12 +59,24 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void showLoginActivity() {
-        delayFinish();
-        startActivity(new Intent(this, LoginActivity.class));
+        final SplashActivity splashActivity = this;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(splashActivity, LoginActivity.class));
+                splashActivity.finish();
+            }
+        }, 1000);
     }
 
     private void showMainActivity() {
-        delayFinish();
-        startActivity(new Intent(this, MainActivity.class));
+        final SplashActivity splashActivity = this;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(splashActivity, MainActivity.class));
+                splashActivity.finish();
+            }
+        }, 1000);
     }
 }

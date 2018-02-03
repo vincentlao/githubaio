@@ -24,4 +24,7 @@ public interface GithubUserDao {
 
     @Delete()
     void deleteUser(GithubUser account);
+
+    @Query("SELECT * FROM github_user WHERE login = :login")
+    LiveData<GithubUser> findByLogin(String login);
 }

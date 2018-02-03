@@ -20,16 +20,35 @@ public class GithubAccount {
     @ColumnInfo(name = "password")
     private String password;
 
-    public GithubAccount(String name, String password) {
-        this.name = name;
-        this.password = password;
+    @NonNull
+    @ColumnInfo(name = "authorization")
+    private String authorization;
+
+    public GithubAccount() {
+    }
+
+    public void setName(String name) {
+        this.name =  name;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setAuthorization(String authorization) {
+        this.authorization = authorization;
+    }
+
+
+    public String getAuthorization() {
+        return authorization;
     }
 }
