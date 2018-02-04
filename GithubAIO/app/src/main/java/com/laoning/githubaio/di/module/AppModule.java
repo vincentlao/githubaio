@@ -38,17 +38,23 @@ public class AppModule {
 
     @Provides
     @Singleton
+    RequestInterceptor provideRequestInterceptor(GlobalInfo globalInfo) {
+        return new RequestInterceptor(globalInfo);
+    }
+
+    @Provides
+    @Singleton
     public AppExecutors provideAppExecutors() {
         return new AppExecutors();
     }
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient() {
+    OkHttpClient provideOkHttpClient(RequestInterceptor requestInterceptor) {
         OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
         okHttpClient.connectTimeout(TIMEOUT_IN_SEC, TimeUnit.SECONDS);
         okHttpClient.readTimeout(TIMEOUT_IN_SEC, TimeUnit.SECONDS);
-        okHttpClient.addInterceptor(new RequestInterceptor());
+        okHttpClient.addInterceptor(requestInterceptor);
         return okHttpClient.build();
     }
 

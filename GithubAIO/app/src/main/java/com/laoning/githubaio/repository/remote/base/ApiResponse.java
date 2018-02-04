@@ -3,6 +3,7 @@ package com.laoning.githubaio.repository.remote.base;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -39,6 +40,8 @@ public class ApiResponse<T> {
 
     public ApiResponse(Response<T> response) {
         code = response.code();
+        Log.d("aio", "code=" + code);
+
         if(response.isSuccessful()) {
             body = response.body();
             errorMessage = null;
@@ -54,9 +57,19 @@ public class ApiResponse<T> {
             if (message == null || message.trim().length() == 0) {
                 message = response.message();
             }
+
+            Log.d("aio", "message=" + message);
+
             errorMessage = message;
             body = null;
         }
+
+        Log.d("aio", "headers=" + response.headers().toString());
+        if (body != null) {
+            Log.d("aio", "body=" + body.toString());
+        }
+
+
         String linkHeader = response.headers().get("link");
         if (linkHeader == null) {
             links = Collections.emptyMap();

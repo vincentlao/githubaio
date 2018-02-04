@@ -9,6 +9,7 @@ import javax.inject.Singleton;
  * Created by laoni on 2018-2-3.
  */
 
+@Singleton
 public class GlobalInfo {
 
     private GithubAccount currentUserAccount = new GithubAccount();

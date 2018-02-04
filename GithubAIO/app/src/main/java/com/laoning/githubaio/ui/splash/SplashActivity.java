@@ -14,7 +14,7 @@ import com.laoning.githubaio.repository.entity.GithubAccount;
 import com.laoning.githubaio.ui.common.BaseActivity;
 import com.laoning.githubaio.ui.login.LoginActivity;
 import com.laoning.githubaio.ui.main.MainActivity;
-import com.laoning.githubaio.viewmodel.AccountViewModel;
+import com.laoning.githubaio.viewmodel.SplashViewModel;
 
 import javax.inject.Inject;
 
@@ -26,7 +26,7 @@ import dagger.android.AndroidInjection;
 
 public class SplashActivity extends BaseActivity {
 
-    private AccountViewModel accountViewModel;
+    private SplashViewModel accountViewModel;
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
@@ -35,7 +35,7 @@ public class SplashActivity extends BaseActivity {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
-        accountViewModel = ViewModelProviders.of(this, viewModelFactory).get(AccountViewModel.class);
+        accountViewModel = ViewModelProviders.of(this, viewModelFactory).get(SplashViewModel.class);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

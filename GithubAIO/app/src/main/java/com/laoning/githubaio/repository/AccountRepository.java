@@ -7,6 +7,10 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.laoning.githubaio.AppExecutors;
 import com.laoning.githubaio.repository.entity.GithubAccount;
 import com.laoning.githubaio.repository.entity.GithubUser;
@@ -16,6 +20,7 @@ import com.laoning.githubaio.repository.remote.base.ApiResponse;
 import com.laoning.githubaio.repository.remote.base.NetworkBoundResource;
 import com.laoning.githubaio.repository.remote.base.Resource;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -55,10 +60,13 @@ public class AccountRepository {
         githubDatabase.accountDao().deleteAccount(account);
     }
 
-    public LiveData<Resource<GithubUser>> loginUser(String login) {
-        return new NetworkBoundResource<GithubUser, GithubUser>(appExecutors) {
+    public LiveData<Resource<GithubUser>> loginUser(String login, String authentication) {
+        return new NetworkBoundResource<GithubUser, GithubUser>(appExecutors, true, true) {
             @Override
             protected void saveCallResult(@NonNull GithubUser item) {
+
+                Type type=new TypeToken<GithubUser>(){}.getType();
+                Log.d("aio", "user: " + new GsonBuilder().create().toJson(item, type));
                 githubDatabase.userDao().addUser(item);
             }
 
@@ -70,20 +78,21 @@ public class AccountRepository {
             @NonNull
             @Override
             protected LiveData<GithubUser> loadFromDb() {
+                Log.d("aio", "loadFromDb, login = " + login);
                 return githubDatabase.userDao().findByLogin(login);
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<GithubUser>> createCall() {
-                return githubService.loginUser();
+                return githubService.loginUser(authentication);
             }
         }.asLiveData();
     }
 
 
     public LiveData<Resource<GithubUser>> loadUser(String login) {
-        return new NetworkBoundResource<GithubUser, GithubUser>(appExecutors) {
+        return new NetworkBoundResource<GithubUser, GithubUser>(appExecutors, false, false) {
             @Override
             protected void saveCallResult(@NonNull GithubUser item) {
                 githubDatabase.userDao().addUser(item);

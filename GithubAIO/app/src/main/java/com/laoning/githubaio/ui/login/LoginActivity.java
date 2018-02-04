@@ -7,28 +7,15 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -38,25 +25,23 @@ import android.widget.TextView;
 
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.GlobalInfo;
-import com.laoning.githubaio.repository.entity.GithubAccount;
 import com.laoning.githubaio.repository.entity.GithubUser;
+import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.common.BaseActivity;
 import com.laoning.githubaio.ui.main.MainActivity;
-import com.laoning.githubaio.viewmodel.AccountViewModel;
+import com.laoning.githubaio.viewmodel.LoginViewModel;
+import com.laoning.githubaio.viewmodel.SplashViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 
-import static android.Manifest.permission.READ_CONTACTS;
-
 
 public class LoginActivity extends BaseActivity {
 
-    private AccountViewModel accountViewModel;
+    private LoginViewModel loginViewModel;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -76,7 +61,7 @@ public class LoginActivity extends BaseActivity {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
-        accountViewModel = ViewModelProviders.of(this, viewModelFactory).get(AccountViewModel.class);
+        loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
 
         setContentView(R.layout.activity_login);
         // Set up the login form.
@@ -148,14 +133,18 @@ public class LoginActivity extends BaseActivity {
             globalInfo.getCurrentUserAccount().setAuthorization(authorization);
 
             //too login
-            LiveData<GithubUser> user = accountViewModel.loginUser();
+            LiveData<Resource<GithubUser>> user = loginViewModel.loginUser();
             user.observe(this, githubUser -> {
-                if (githubUser == null) {
+                Log.d("aio", "user.observe callback");
+                if (githubUser == null || githubUser.data == null) {
+                    Log.d("aio", "githubUser == null");
                     showProgress(false);
                     mPasswordView.setError(getString(R.string.error_incorrect_password));
                     mPasswordView.requestFocus();
                 } else {
+                    Log.d("aio", "login success, login = " + githubUser.data.getLogin());
                     startActivity(new Intent(this, MainActivity.class));
+                    finish();;
                 }
             });
         }

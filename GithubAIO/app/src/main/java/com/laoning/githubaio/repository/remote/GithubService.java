@@ -6,6 +6,7 @@ import com.laoning.githubaio.repository.entity.GithubUser;
 import com.laoning.githubaio.repository.remote.base.ApiResponse;
 
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Path;
 
 /**
@@ -15,7 +16,7 @@ import retrofit2.http.Path;
 public interface GithubService {
 
     @GET("user")
-    LiveData<ApiResponse<GithubUser>> loginUser();
+    LiveData<ApiResponse<GithubUser>> loginUser(@Header("Authorization") String authentication);
 
     @GET("users/{login}")
     LiveData<ApiResponse<GithubUser>> getUser(@Path("login") String login);

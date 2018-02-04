@@ -18,16 +18,21 @@ import okhttp3.Response;
 
 public class RequestInterceptor implements Interceptor {
 
+    private final GlobalInfo globalInfo;
+
     @Inject
-    GlobalInfo globalInfo;
+    public RequestInterceptor(GlobalInfo globalInfo) {
+        this.globalInfo = globalInfo;
+    }
 
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request original = chain.request();
 
         Request.Builder requestBuilder = original.newBuilder()
-                .header("Authorization", "")
-                .header("Accept", "applicaton/json")
+                .header("Authorization", globalInfo.getCurrentUserAccount().getAuthorization())
+//                .header("Accept", "applicaton/json")
+//                .header("Content-Type", "application/json;charset=UTF-8")
                 .method(original.method(), original.body());
 
         Request request = requestBuilder.build();
