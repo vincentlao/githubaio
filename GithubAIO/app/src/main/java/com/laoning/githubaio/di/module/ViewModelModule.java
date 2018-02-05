@@ -3,6 +3,7 @@ package com.laoning.githubaio.di.module;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
+import com.laoning.githubaio.viewmodel.MainViewModel;
 import com.laoning.githubaio.viewmodel.SplashViewModel;
 import com.laoning.githubaio.viewmodel.LoginViewModel;
 
@@ -27,6 +28,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel.class)
     abstract ViewModel bindLoginViewModel(LoginViewModel loginViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel.class)
+    abstract ViewModel bindMaiinViewModel(MainViewModel mainViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory viewModelFactory);

@@ -1,5 +1,7 @@
 package com.laoning.githubaio.ui.main;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,13 +16,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.laoning.githubaio.R;
+import com.laoning.githubaio.base.GlobalInfo;
+import com.laoning.githubaio.ui.common.BaseActivity;
+import com.laoning.githubaio.viewmodel.LoginViewModel;
+import com.laoning.githubaio.viewmodel.MainViewModel;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private MainViewModel mainViewModel;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    GlobalInfo globalInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

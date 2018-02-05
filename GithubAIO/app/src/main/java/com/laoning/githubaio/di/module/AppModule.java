@@ -1,5 +1,6 @@
 package com.laoning.githubaio.di.module;
 
+import android.app.Application;
 import android.arch.persistence.room.Room;
 
 import com.laoning.githubaio.AppExecutors;
@@ -72,9 +73,9 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public GithubDatabase provideGithubDatabase(GithubAioApp app) {
-//        return Room.databaseBuilder(app, GithubDatabase.class,"github_aio.db").build();
-        return Room.inMemoryDatabaseBuilder(app, GithubDatabase.class).build();
+    public GithubDatabase provideGithubDatabase(Application app) {
+        return Room.databaseBuilder(app, GithubDatabase.class,"github_aio.db").build();
+//        return Room.inMemoryDatabaseBuilder(app, GithubDatabase.class).build();
     }
 
     @Provides
