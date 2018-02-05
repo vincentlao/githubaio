@@ -6,11 +6,16 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.laoning.githubaio.R;
+import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.GithubAccount;
+import com.laoning.githubaio.repository.entity.GithubUser;
+import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.common.BaseActivity;
 import com.laoning.githubaio.ui.login.LoginActivity;
 import com.laoning.githubaio.ui.main.MainActivity;
@@ -26,16 +31,20 @@ import dagger.android.AndroidInjection;
 
 public class SplashActivity extends BaseActivity {
 
-    private SplashViewModel accountViewModel;
+    private SplashViewModel splashViewModel;
+
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    GlobalInfo globalInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
-        accountViewModel = ViewModelProviders.of(this, viewModelFactory).get(SplashViewModel.class);
+        splashViewModel = ViewModelProviders.of(this, viewModelFactory).get(SplashViewModel.class);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -47,12 +56,34 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void loadUser() {
-        LiveData<GithubAccount> accountLiveData = accountViewModel.getFirstAccountLocally();
+        LiveData<GithubAccount> accountLiveData = splashViewModel.getFirstAccountLocally();
 
         accountLiveData.observe(this, account -> {
             if (account == null) {
                 showLoginActivity();
             } else {
+                String name = account.getName();
+                String password = account.getPassword();
+                String credentials = name + ":" + password;
+                String authorization = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+
+                globalInfo.getCurrentUserAccount().setName(name);
+                globalInfo.getCurrentUserAccount().setPassword(password);
+                globalInfo.getCurrentUserAccount().setAuthorization(authorization);
+
+                //too login
+                LiveData<Resource<GithubUser>> user = splashViewModel.loginUser();
+                user.observe(this, githubUser -> {
+                    Log.d("aio", "user.observe callback");
+                    if (githubUser == null || githubUser.data == null) {
+                        Log.d("aio", "githubUser == null");
+                        showLoginActivity();
+                    } else {
+                        Log.d("aio", "login success, login = " + githubUser.data.getLogin());
+                        startActivity(new Intent(this, MainActivity.class));
+                        finish();;
+                    }
+                });
                 showMainActivity();
             }
         });

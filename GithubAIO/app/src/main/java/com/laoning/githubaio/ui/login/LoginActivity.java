@@ -25,12 +25,12 @@ import android.widget.TextView;
 
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.GlobalInfo;
+import com.laoning.githubaio.repository.entity.GithubAccount;
 import com.laoning.githubaio.repository.entity.GithubUser;
 import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.common.BaseActivity;
 import com.laoning.githubaio.ui.main.MainActivity;
 import com.laoning.githubaio.viewmodel.LoginViewModel;
-import com.laoning.githubaio.viewmodel.SplashViewModel;
 
 import java.util.List;
 
@@ -143,6 +143,13 @@ public class LoginActivity extends BaseActivity {
                     mPasswordView.requestFocus();
                 } else {
                     Log.d("aio", "login success, login = " + githubUser.data.getLogin());
+
+                    GithubAccount account = new GithubAccount();
+                    account.setName(name);
+                    account.setPassword(password);
+                    account.setAuthorization(authorization);
+                    loginViewModel.saveUserAccount(account);
+
                     startActivity(new Intent(this, MainActivity.class));
                     finish();;
                 }

@@ -25,14 +25,20 @@ public class SplashViewModel extends ViewModel {
 
     private LiveData<GithubAccount> firstAccountLocally;
     private final AccountRepository accountRepository;
+    private final GlobalInfo globalInfo;
 
     @Inject
-    public SplashViewModel(AccountRepository accountRepository) {
+    public SplashViewModel(AccountRepository accountRepository, GlobalInfo globalInfo) {
         this.accountRepository = accountRepository;
+        this.globalInfo = globalInfo;
         firstAccountLocally = accountRepository.getFirstAccountLocally();
     }
 
     public LiveData<GithubAccount> getFirstAccountLocally() {
         return firstAccountLocally;
+    }
+
+    public LiveData<Resource<GithubUser>> loginUser() {
+        return  accountRepository.loginUser(globalInfo.getCurrentUserAccount().getName(), globalInfo.getCurrentUserAccount().getAuthorization());
     }
 }

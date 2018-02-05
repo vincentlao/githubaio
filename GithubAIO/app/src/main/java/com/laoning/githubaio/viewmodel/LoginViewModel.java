@@ -6,6 +6,7 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
+import com.laoning.githubaio.AppExecutors;
 import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.AccountRepository;
 import com.laoning.githubaio.repository.entity.GithubAccount;
@@ -27,17 +28,23 @@ public class LoginViewModel extends ViewModel {
 
     private final AccountRepository accountRepository;
     private final GlobalInfo globalInfo;
+    private final AppExecutors appExecutors;
 
     @Inject
-    public LoginViewModel(AccountRepository accountRepository, GlobalInfo globalInfo) {
+    public LoginViewModel(AccountRepository accountRepository, GlobalInfo globalInfo, AppExecutors appExecutors) {
         this.accountRepository = accountRepository;
         this.globalInfo = globalInfo;
+        this.appExecutors = appExecutors;
         firstAccountLocally = accountRepository.getFirstAccountLocally();
         listLiveData = accountRepository.loadAccounts();
     }
 
     public void saveUserAccount(GithubAccount githubAccount) {
-        accountRepository.addAccount(githubAccount);
+        appExecutors.diskIO().execute(() -> {
+            accountRepository.addAccount(githubAccount);
+        });
+
+
     }
 
     public LiveData<GithubAccount> getFirstAccountLocally() {
@@ -50,19 +57,5 @@ public class LoginViewModel extends ViewModel {
 
     public LiveData<Resource<GithubUser>> loginUser() {
         return  accountRepository.loginUser(globalInfo.getCurrentUserAccount().getName(), globalInfo.getCurrentUserAccount().getAuthorization());
-
-//        LiveData<GithubUser> user = Transformations.switchMap(apiResponse, data -> {
-//            if (data == null) {
-//                Log.d("aio", "data=null");
-//                return AbsentLiveData.<GithubUser>create();
-//            } else {
-//                Log.d("aio", "data != null, login = " + data.data.getLogin());
-//                MutableLiveData<GithubUser> u = new MutableLiveData<>();
-//                u.postValue(data.data);
-//                return u;
-//            }
-//        });
-//
-//        return  user;
     }
 }
