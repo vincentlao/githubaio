@@ -1,4 +1,4 @@
-package com.laoning.githubaio.ui.splash;
+package com.laoning.githubaio.ui.activity;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
@@ -16,9 +16,6 @@ import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.Account;
 import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.repository.remote.base.Resource;
-import com.laoning.githubaio.ui.common.BaseActivity;
-import com.laoning.githubaio.ui.login.LoginActivity;
-import com.laoning.githubaio.ui.main.MainActivity;
 import com.laoning.githubaio.viewmodel.SplashViewModel;
 
 import javax.inject.Inject;

@@ -1,8 +1,8 @@
 package com.laoning.githubaio.di.module;
 
-import com.laoning.githubaio.ui.login.LoginActivity;
-import com.laoning.githubaio.ui.main.MainActivity;
-import com.laoning.githubaio.ui.splash.SplashActivity;
+import com.laoning.githubaio.ui.activity.LoginActivity;
+import com.laoning.githubaio.ui.activity.MainActivity;
+import com.laoning.githubaio.ui.activity.SplashActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

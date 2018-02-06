@@ -1,4 +1,4 @@
-package com.laoning.githubaio.ui.login;
+package com.laoning.githubaio.ui.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -28,8 +28,6 @@ import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.Account;
 import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.repository.remote.base.Resource;
-import com.laoning.githubaio.ui.common.BaseActivity;
-import com.laoning.githubaio.ui.main.MainActivity;
 import com.laoning.githubaio.viewmodel.LoginViewModel;
 
 import java.util.List;

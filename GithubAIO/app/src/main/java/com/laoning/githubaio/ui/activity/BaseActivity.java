@@ -1,4 +1,4 @@
-package com.laoning.githubaio.ui.common;
+package com.laoning.githubaio.ui.activity;
 
 import android.os.Bundle;
 import android.os.Handler;

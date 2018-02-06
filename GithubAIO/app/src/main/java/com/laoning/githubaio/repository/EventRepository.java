@@ -85,10 +85,6 @@ public class EventRepository {
                             result.postValue(null);
                         } else {
                             List<Long> eventIds = eventForUser.getEventIds();
-                            List<String> eventStringIds = new ArrayList<>();
-//                            for (Integer id : eventIds) {
-//                                eventStringIds.add(id.toString());
-//                            }
                             List<Event> events = githubDatabase.eventDao().loadByIdSync(eventIds);
                             result.postValue(events);
                         }

@@ -1,4 +1,4 @@
-package com.laoning.githubaio.ui.main;
+package com.laoning.githubaio.ui.activity;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
@@ -11,17 +11,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.event.Event;
 import com.laoning.githubaio.repository.remote.base.Resource;
-import com.laoning.githubaio.ui.common.BaseActivity;
-import com.laoning.githubaio.viewmodel.LoginViewModel;
+import com.laoning.githubaio.ui.activity.BaseActivity;
 import com.laoning.githubaio.viewmodel.MainViewModel;
 
 import java.util.List;
