@@ -1,6 +1,6 @@
 package com.laoning.githubaio.base;
 
-import com.laoning.githubaio.repository.entity.GithubAccount;
+import com.laoning.githubaio.repository.entity.Account;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,14 +12,14 @@ import javax.inject.Singleton;
 @Singleton
 public class GlobalInfo {
 
-    private GithubAccount currentUserAccount = new GithubAccount();
+    private Account currentUserAccount = new Account();
 
     @Inject
     public GlobalInfo() {
 
     }
 
-    public GithubAccount getCurrentUserAccount() {
+    public Account getCurrentUserAccount() {
         return currentUserAccount;
     }
 }

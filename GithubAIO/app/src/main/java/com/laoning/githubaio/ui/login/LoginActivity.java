@@ -25,8 +25,8 @@ import android.widget.TextView;
 
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.GlobalInfo;
-import com.laoning.githubaio.repository.entity.GithubAccount;
-import com.laoning.githubaio.repository.entity.GithubUser;
+import com.laoning.githubaio.repository.entity.Account;
+import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.common.BaseActivity;
 import com.laoning.githubaio.ui.main.MainActivity;
@@ -133,7 +133,7 @@ public class LoginActivity extends BaseActivity {
             globalInfo.getCurrentUserAccount().setAuthorization(authorization);
 
             //too login
-            LiveData<Resource<GithubUser>> user = loginViewModel.loginUser();
+            LiveData<Resource<User>> user = loginViewModel.loginUser();
             user.observe(this, githubUser -> {
                 Log.d("aio", "user.observe callback");
                 if (githubUser == null || githubUser.data == null) {
@@ -144,7 +144,7 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     Log.d("aio", "login success, login = " + githubUser.data.getLogin());
 
-                    GithubAccount account = new GithubAccount();
+                    Account account = new Account();
                     account.setName(name);
                     account.setPassword(password);
                     account.setAuthorization(authorization);

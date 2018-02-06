@@ -13,8 +13,8 @@ import android.view.WindowManager;
 
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.GlobalInfo;
-import com.laoning.githubaio.repository.entity.GithubAccount;
-import com.laoning.githubaio.repository.entity.GithubUser;
+import com.laoning.githubaio.repository.entity.Account;
+import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.common.BaseActivity;
 import com.laoning.githubaio.ui.login.LoginActivity;
@@ -56,7 +56,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void loadUser() {
-        LiveData<GithubAccount> accountLiveData = splashViewModel.getFirstAccountLocally();
+        LiveData<Account> accountLiveData = splashViewModel.getFirstAccountLocally();
 
         accountLiveData.observe(this, account -> {
             if (account == null) {
@@ -72,7 +72,7 @@ public class SplashActivity extends BaseActivity {
                 globalInfo.getCurrentUserAccount().setAuthorization(authorization);
 
                 //too login
-                LiveData<Resource<GithubUser>> user = splashViewModel.loginUser();
+                LiveData<Resource<User>> user = splashViewModel.loginUser();
                 user.observe(this, githubUser -> {
                     Log.d("aio", "user.observe callback");
                     if (githubUser == null || githubUser.data == null) {

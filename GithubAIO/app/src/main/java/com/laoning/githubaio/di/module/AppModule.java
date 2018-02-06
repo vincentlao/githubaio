@@ -7,6 +7,7 @@ import com.laoning.githubaio.AppExecutors;
 import com.laoning.githubaio.GithubAioApp;
 import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.AccountRepository;
+import com.laoning.githubaio.repository.EventRepository;
 import com.laoning.githubaio.repository.local.GithubDatabase;
 import com.laoning.githubaio.repository.remote.GithubService;
 
@@ -82,5 +83,11 @@ public class AppModule {
     @Singleton
     public AccountRepository provideAccountRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
         return new AccountRepository(githubDatabase, githubService, appExecutors);
+    }
+
+    @Provides
+    @Singleton
+    public EventRepository provideEventRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
+        return new EventRepository(githubDatabase, githubService, appExecutors);
     }
 }

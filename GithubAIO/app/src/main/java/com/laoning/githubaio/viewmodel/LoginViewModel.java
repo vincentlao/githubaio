@@ -1,17 +1,13 @@
 package com.laoning.githubaio.viewmodel;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
-import android.util.Log;
 
 import com.laoning.githubaio.AppExecutors;
 import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.AccountRepository;
-import com.laoning.githubaio.repository.entity.GithubAccount;
-import com.laoning.githubaio.repository.entity.GithubUser;
-import com.laoning.githubaio.repository.remote.base.AbsentLiveData;
+import com.laoning.githubaio.repository.entity.Account;
+import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.repository.remote.base.Resource;
 
 import java.util.List;
@@ -23,8 +19,8 @@ import javax.inject.Inject;
  */
 
 public class LoginViewModel extends ViewModel {
-    private LiveData<GithubAccount> firstAccountLocally;
-    private LiveData<List<GithubAccount>> listLiveData;
+    private LiveData<Account> firstAccountLocally;
+    private LiveData<List<Account>> listLiveData;
 
     private final AccountRepository accountRepository;
     private final GlobalInfo globalInfo;
@@ -39,23 +35,19 @@ public class LoginViewModel extends ViewModel {
         listLiveData = accountRepository.loadAccounts();
     }
 
-    public void saveUserAccount(GithubAccount githubAccount) {
-        appExecutors.diskIO().execute(() -> {
-            accountRepository.addAccount(githubAccount);
-        });
-
-
+    public void saveUserAccount(Account githubAccount) {
+        accountRepository.addAccount(githubAccount);
     }
 
-    public LiveData<GithubAccount> getFirstAccountLocally() {
+    public LiveData<Account> getFirstAccountLocally() {
         return firstAccountLocally;
     }
 
-    public LiveData<List<GithubAccount>> loadAccountsLocally() {
+    public LiveData<List<Account>> loadAccountsLocally() {
         return listLiveData;
     }
 
-    public LiveData<Resource<GithubUser>> loginUser() {
+    public LiveData<Resource<User>> loginUser() {
         return  accountRepository.loginUser(globalInfo.getCurrentUserAccount().getName(), globalInfo.getCurrentUserAccount().getAuthorization());
     }
 }
