@@ -19,12 +19,18 @@ import dagger.android.HasActivityInjector;
 @Singleton
 public class GithubAioApp extends Application implements HasActivityInjector {
 
+    private static  GithubAioApp app;
+
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingInjector;
 
     @Inject
     public GithubAioApp() {
+        app = this;
+    }
 
+    public static GithubAioApp getApp() {
+        return app;
     }
 
     @Override
