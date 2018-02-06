@@ -1,13 +1,22 @@
 package com.laoning.githubaio.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.laoning.githubaio.R;
+import com.laoning.githubaio.repository.entity.event.Event;
+import com.laoning.githubaio.ui.adapter.ActivityAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,63 +26,82 @@ import com.laoning.githubaio.R;
  * Use the {@link ActivityFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ActivityFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class ActivityFragment extends ListFragment<ActivityAdapter> {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ActivityFragment() {
-        // Required empty public constructor
+    public enum ActivityType {
+        News, User, Repository, PublicNews
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ActivityFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ActivityFragment newInstance(String param1, String param2) {
+    public static ActivityFragment create() {
         ActivityFragment fragment = new ActivityFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    protected int getLayoutId() {
+        return R.layout.fragment_list;
+    }
+
+    @Override
+    protected void initFragment(Bundle savedInstanceState) {
+        super.initFragment(savedInstanceState);
+        setLoadMoreEnable(true);
+        registerForContextMenu(recyclerView);
+    }
+
+    @Override
+    protected void onReLoadData() {
+//        mPresenter.loadEvents(true, 1);
+    }
+
+    @Override
+    protected String getEmptyTip() {
+        return getString(R.string.no_activity);
+    }
+
+    @Override
+    public void onItemClick(int position, @NonNull View view) {
+
+    }
+
+    @Override
+    public boolean onItemLongClick(int position, @NonNull View view) {
+        return super.onItemLongClick(position, view);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getIntent() != null) {
+            startActivity(item.getIntent());
         }
+        return true;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false);
+    protected void onLoadMore(int page) {
+        super.onLoadMore(page);
+//        mPresenter.loadEvents(false, page);
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void showEvents(ArrayList<Event> events) {
+        adapter.setData(events);
+        postNotifyDataSetChanged();
+//        if(getCurPage() == 2 && PrefUtils.isActivityLongClickTipAble()){
+//            showOperationTip(R.string.activity_click_tip);
+//            PrefUtils.set(PrefUtils.ACTIVITY_LONG_CLICK_TIP_ABLE, false);
+//        }
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onFragmentShowed() {
+        super.onFragmentShowed();
+//        if (mPresenter != null) mPresenter.prepareLoadData();
     }
 
 }

@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,7 @@ import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.event.Event;
 import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.activity.BaseActivity;
+import com.laoning.githubaio.ui.fragment.ActivityFragment;
 import com.laoning.githubaio.viewmodel.MainViewModel;
 
 import java.util.List;
@@ -67,6 +69,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        Fragment showFragment = ActivityFragment.create();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .show(showFragment)
+                .commit();
 
         LiveData<Resource<List<Event>>> events =  mainViewModel.loadEvent(globalInfo.getCurrentUserAccount().getName(), 1);
         events.observe(this, eventsResource -> {
