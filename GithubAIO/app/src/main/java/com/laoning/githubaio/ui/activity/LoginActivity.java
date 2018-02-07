@@ -56,7 +56,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        AndroidInjection.inject(this);
+//        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
         loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);

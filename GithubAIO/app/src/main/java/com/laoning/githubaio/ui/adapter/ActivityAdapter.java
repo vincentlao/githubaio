@@ -1,29 +1,19 @@
 package com.laoning.githubaio.ui.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
-import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.StringUtils;
 import com.laoning.githubaio.repository.entity.event.Event;
+import com.laoning.githubaio.repository.entity.event.Payload;
 import com.laoning.githubaio.ui.fragment.BaseFragment;
-
-import java.util.regex.Matcher;
-
-import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 /**
  * Created by laoni on 2018-2-6.
@@ -32,7 +22,7 @@ import butterknife.OnClick;
 
 public class ActivityAdapter extends BaseAdapter<ActivityAdapter.ViewHolder, Event> {
 
-    @Inject
+//    @Inject
     public ActivityAdapter(Context context, BaseFragment fragment) {
         super(context, fragment);
     }
@@ -56,7 +46,7 @@ public class ActivityAdapter extends BaseAdapter<ActivityAdapter.ViewHolder, Eve
 //                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
 //                .into(holder.userAvatar);
         holder.userName.setText(model.getActor().getLogin());
-        holder.time.setText(StringUtils.getNewsTimeStr(context, model.getCreatedAt()));
+        holder.time.setText(model.getCreatedAt());
 
         holder.setActionAndDesc(model);
     }
@@ -76,9 +66,18 @@ public class ActivityAdapter extends BaseAdapter<ActivityAdapter.ViewHolder, Eve
         }
 
 
-        //TODO to be better event action and desc
         void setActionAndDesc(Event model) {
+            if (model == null) {
+                Log.d("aio", "model == null");
+                return;
+            }
+            String fullName = model.getRepo() != null ? model.getRepo().getName() : null;
 
+            String action = model.getPayload() != null ? model.getPayload().getAction() : "";
+
+            String repoName = model.getRepo() != null ? model.getRepo().getName() : "";
+            String actionStr = fullName + " " + action + " on " + repoName;
+            this.action.setText(actionStr);
         }
 
         private String getFirstLine(String str){
@@ -87,19 +86,77 @@ public class ActivityAdapter extends BaseAdapter<ActivityAdapter.ViewHolder, Eve
         }
 
         private String getPullRequestReviewEventStr(String action){
-            return action;
+            Payload.PullRequestReviewEventActionType actionType =
+                    Payload.PullRequestReviewEventActionType.valueOf(action);
+            switch (actionType){
+                case submitted:
+                    return getString(R.string.submitted_pull_request_review_at);
+                case edited:
+                    return getString(R.string.edited_pull_request_review_at);
+                case dismissed:
+                    return getString(R.string.dismissed_pull_request_review_at);
+                default:
+                    return getString(R.string.submitted_pull_request_review_at);
+            }
         }
 
         private String getPullRequestReviewCommentEventStr(String action){
-            return action;
+            Payload.PullRequestReviewCommentEventActionType actionType =
+                    Payload.PullRequestReviewCommentEventActionType.valueOf(action);
+            switch (actionType){
+                case created:
+                    return getString(R.string.created_pull_request_comment_at);
+                case edited:
+                    return getString(R.string.edited_pull_request_comment_at);
+                case deleted:
+                    return getString(R.string.deleted_pull_request_comment_at);
+                default:
+                    return getString(R.string.created_pull_request_comment_at);
+            }
         }
 
         private String getMemberEventStr(String action){
-            return action;
+            Payload.MemberEventActionType actionType = Payload.MemberEventActionType.valueOf(action);
+            switch (actionType){
+                case added:
+                    return getString(R.string.added_member_to);
+                case deleted:
+                    return getString(R.string.deleted_member_at);
+                case edited:
+                    return getString(R.string.edited_member_at);
+                default:
+                    return getString(R.string.added_member_to);
+            }
         }
 
         private String getIssueEventStr(String action){
-            return action;
+            Payload.IssueEventActionType actionType = Payload.IssueEventActionType.valueOf(action);
+            switch (actionType){
+                case assigned:
+                    return getString(R.string.assigned_issue_at);
+                case unassigned:
+                    return getString(R.string.unassigned_issue_at);
+                case labeled:
+                    return getString(R.string.labeled_issue_at);
+                case unlabeled:
+                    return getString(R.string.unlabeled_issue_at);
+                case opened:
+                    return getString(R.string.opened_issue_at);
+
+                case edited:
+                    return getString(R.string.edited_issue_at);
+                case milestoned:
+                    return getString(R.string.milestoned_issue_at);
+                case demilestoned:
+                    return getString(R.string.demilestoned_issue_at);
+                case closed:
+                    return getString(R.string.closed_issue_at);
+                case reopened:
+                    return getString(R.string.reopened_issue_at);
+
+                default:
+                    return getString(R.string.opened_issue_at);
+            }
         }
 
     }

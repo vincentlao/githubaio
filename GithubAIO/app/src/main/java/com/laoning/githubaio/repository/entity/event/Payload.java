@@ -8,6 +8,31 @@ import com.google.gson.annotations.SerializedName;
 
 public class Payload {
 
+    public enum RefType{
+        repository, branch, tag
+    }
+
+    public enum IssueEventActionType{
+        assigned, unassigned, labeled, unlabeled, opened,
+        edited, milestoned, demilestoned, closed, reopened
+    }
+
+    public enum MemberEventActionType{
+        added, deleted, edited
+    }
+
+    public enum OrgBlockEventActionType{
+        blocked, unblocked
+    }
+
+    public enum PullRequestReviewCommentEventActionType{
+        created, edited, deleted
+    }
+
+    public enum PullRequestReviewEventActionType{
+        submitted, edited, dismissed
+    }
+
     @ColumnInfo(name = "action")
     private String action;
 

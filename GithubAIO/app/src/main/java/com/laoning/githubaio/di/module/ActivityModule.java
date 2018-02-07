@@ -14,12 +14,12 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class ActivityModule {
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
     abstract SplashActivity splashActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
     abstract MainActivity mainActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
     abstract LoginActivity loginActivity();
 }

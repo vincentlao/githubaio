@@ -2,26 +2,19 @@ package com.laoning.githubaio.ui.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.bumptech.glide.Glide;
-import com.laoning.githubaio.ui.activity.LoginActivity;
+import com.laoning.githubaio.di.module.Injectable;
 
 import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -29,10 +22,9 @@ import butterknife.Unbinder;
  * Created by laoning on 06/02/2018.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements Injectable {
     private final String TAG = BaseFragment.class.getSimpleName();
 
-    @Inject
     ProgressDialog mProgressDialog;
     Unbinder unbinder;
 
@@ -54,9 +46,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        //some page contain WebView will make default language changed
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(getLayoutId(), container, false);
         unbinder = ButterKnife.bind(this, fragmentView);
         initFragment(savedInstanceState);

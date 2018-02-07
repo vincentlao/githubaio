@@ -4,10 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,8 +16,7 @@ import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.event.Event;
 import com.laoning.githubaio.repository.remote.base.Resource;
-import com.laoning.githubaio.ui.activity.BaseActivity;
-import com.laoning.githubaio.ui.fragment.ActivityFragment;
+import com.laoning.githubaio.ui.fragment.EventFragment;
 import com.laoning.githubaio.viewmodel.MainViewModel;
 
 import java.util.List;
@@ -31,34 +27,14 @@ import dagger.android.AndroidInjection;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private MainViewModel mainViewModel;
-
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-
-    @Inject
-    GlobalInfo globalInfo;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
+//        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-
-        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -70,19 +46,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        Fragment showFragment = ActivityFragment.create();
+        Fragment showFragment = EventFragment.create();
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .show(showFragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_content, showFragment, showFragment.getTag()).commit();
 
-        LiveData<Resource<List<Event>>> events =  mainViewModel.loadEvent(globalInfo.getCurrentUserAccount().getName(), 1);
-        events.observe(this, eventsResource -> {
-            if (eventsResource == null || eventsResource.data == null) {
-
-            }
-        });
+//        getSupportFragmentManager().beginTransaction().replace(containerId, userFragment, tag).addToBackStack(null).commitAllowingStateLoss();
+//
+//        getSupportFragmentManager().beginTransaction().show(showFragment).commit();
     }
 
     @Override

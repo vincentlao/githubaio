@@ -73,5 +73,4 @@ public class Actor {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
-
 }

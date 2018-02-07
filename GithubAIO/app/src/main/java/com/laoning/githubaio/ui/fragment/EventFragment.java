@@ -1,39 +1,46 @@
 package com.laoning.githubaio.ui.fragment;
 
-import android.content.Context;
-import android.content.Intent;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.laoning.githubaio.R;
+import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.event.Event;
+import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.adapter.ActivityAdapter;
+import com.laoning.githubaio.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ActivityFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ActivityFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ActivityFragment extends ListFragment<ActivityAdapter> {
+import javax.inject.Inject;
+
+
+public class EventFragment extends ListFragment<ActivityAdapter> {
+
+    private MainViewModel mainViewModel;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    GlobalInfo globalInfo;
+
+
 
     public enum ActivityType {
         News, User, Repository, PublicNews
     }
 
-    public static ActivityFragment create() {
-        ActivityFragment fragment = new ActivityFragment();
+    public static EventFragment create() {
+        EventFragment fragment = new EventFragment();
         return fragment;
     }
 
@@ -44,14 +51,39 @@ public class ActivityFragment extends ListFragment<ActivityAdapter> {
 
     @Override
     protected void initFragment(Bundle savedInstanceState) {
+        adapter = new ActivityAdapter(getActivity(), this);
         super.initFragment(savedInstanceState);
+
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
+
         setLoadMoreEnable(true);
         registerForContextMenu(recyclerView);
+
+        onLoadData();
+    }
+
+    @Override
+    protected void onLoadData() {
+        LiveData<Resource<List<Event>>> events =  mainViewModel.loadEvent(globalInfo.getCurrentUserAccount().getName(), 1);
+        events.observe(this, eventsResource -> {
+            if (eventsResource == null || eventsResource.data == null) {
+                return;
+            }
+
+            showEvents(eventsResource.data);
+        });
     }
 
     @Override
     protected void onReLoadData() {
-//        mPresenter.loadEvents(true, 1);
+        LiveData<Resource<List<Event>>> events =  mainViewModel.loadEvent(globalInfo.getCurrentUserAccount().getName(), 1);
+        events.observe(this, eventsResource -> {
+            if (eventsResource == null || eventsResource.data == null) {
+                return;
+            }
+
+            showEvents(eventsResource.data);
+        });
     }
 
     @Override
@@ -89,13 +121,9 @@ public class ActivityFragment extends ListFragment<ActivityAdapter> {
 //        mPresenter.loadEvents(false, page);
     }
 
-    public void showEvents(ArrayList<Event> events) {
+    public void showEvents(List<Event> events) {
         adapter.setData(events);
         postNotifyDataSetChanged();
-//        if(getCurPage() == 2 && PrefUtils.isActivityLongClickTipAble()){
-//            showOperationTip(R.string.activity_click_tip);
-//            PrefUtils.set(PrefUtils.ACTIVITY_LONG_CLICK_TIP_ABLE, false);
-//        }
     }
 
     @Override

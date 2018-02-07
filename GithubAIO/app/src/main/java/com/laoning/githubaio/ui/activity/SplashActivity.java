@@ -38,7 +38,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
+//        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
         splashViewModel = ViewModelProviders.of(this, viewModelFactory).get(SplashViewModel.class);

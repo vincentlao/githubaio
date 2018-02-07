@@ -28,7 +28,8 @@ public abstract  class ListFragment<A extends BaseAdapter> extends BaseFragment 
 
     @BindView(R.id.refresh_layout) protected SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
-    @Inject
+
+//    @Inject
     protected A adapter;
     private RecyclerView.AdapterDataObserver observer;
 
@@ -54,6 +55,7 @@ public abstract  class ListFragment<A extends BaseAdapter> extends BaseFragment 
         refreshLayout.setOnRefreshListener(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         adapter.setOnItemLongClickListener(this);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
@@ -198,6 +200,8 @@ public abstract  class ListFragment<A extends BaseAdapter> extends BaseFragment 
         isLoading = false;
         refreshLayout.setRefreshing(false);
     }
+
+    protected abstract void onLoadData();
 
     protected abstract void onReLoadData();
 

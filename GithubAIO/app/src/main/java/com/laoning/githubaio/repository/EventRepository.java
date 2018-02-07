@@ -53,7 +53,7 @@ public class EventRepository {
                 Type type=new TypeToken<List<Event>>(){}.getType();
                 Log.d("aio", "events: " + new GsonBuilder().create().toJson(events, type));
 
-                githubDatabase.beginTransaction();
+//                githubDatabase.beginTransaction();
                 try{
                     List<Long> ids = new ArrayList<>();
                     for (Event event : events) {
@@ -61,10 +61,15 @@ public class EventRepository {
                     }
 
                     EventForUser eventForUser = new EventForUser(userAndPage, ids);
+
+                    Type t = new TypeToken<EventForUser>(){}.getType();
+                    Log.d("aio", "eventForUser: " + new GsonBuilder().create().toJson(eventForUser, t));
+
+
                     githubDatabase.eventDao().insert(eventForUser);
                     githubDatabase.eventDao().insertEvents(events);
                 } finally {
-                    githubDatabase.endTransaction();;
+//                    githubDatabase.endTransaction();;
                 }
             }
 

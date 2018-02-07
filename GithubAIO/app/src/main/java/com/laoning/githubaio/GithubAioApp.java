@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.laoning.githubaio.di.component.DaggerAppComponent;
+import com.laoning.githubaio.di.module.AppInjector;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -47,9 +48,6 @@ public class GithubAioApp extends Application implements HasActivityInjector {
 
 
     private void initializeComponent() {
-        DaggerAppComponent.builder()
-                .application(this)
-                .build()
-                .inject(this);
+        AppInjector.init(this);
     }
 }

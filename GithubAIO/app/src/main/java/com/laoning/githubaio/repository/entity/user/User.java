@@ -152,10 +152,10 @@ public class User {
     private int following;
 
     @ColumnInfo(name = "created_at")
-    private Date createAt;
+    private String createAt;
 
     @ColumnInfo(name = "updated_at")
-    private Date updateAt;
+    private String updateAt;
 
     @ColumnInfo(name = "private_gists")
     private int privateGists;
@@ -405,19 +405,19 @@ public class User {
         this.following = following;
     }
 
-    public Date getCreateAt() {
+    public String getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreateAt(String createAt) {
         this.createAt = createAt;
     }
 
-    public Date getUpdateAt() {
+    public String getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
+    public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
     }
 

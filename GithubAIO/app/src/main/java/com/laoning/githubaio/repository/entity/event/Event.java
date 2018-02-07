@@ -36,7 +36,7 @@ public class Event {
     private boolean _public;
 
     @ColumnInfo(name = "created_at")
-    private Date createdAt;
+    private String createdAt;
 
     @Embedded(prefix = "org_")
     private Org org;
@@ -89,11 +89,11 @@ public class Event {
         this._public = _public;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 

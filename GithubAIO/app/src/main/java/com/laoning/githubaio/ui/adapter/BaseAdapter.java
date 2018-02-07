@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.laoning.githubaio.ui.fragment.BaseFragment;
-
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by laoning on 06/02/2018.
@@ -30,7 +29,7 @@ public abstract class BaseAdapter<VH extends BaseViewHolder, D extends Object>
     /**
      * 数据列表
      */
-    protected ArrayList<D> data;
+    protected List<D> data;
 
     /**
      * 关联的activity
@@ -51,11 +50,11 @@ public abstract class BaseAdapter<VH extends BaseViewHolder, D extends Object>
      * 设置数据
      * @param data
      */
-    public void setData(ArrayList<D> data){
+    public void setData(List<D> data){
         this.data = data;
     }
 
-    public ArrayList<D> getData() {
+    public List<D> getData() {
         return data;
     }
 
