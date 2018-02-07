@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.StringUtils;
 import com.laoning.githubaio.repository.entity.event.Event;
@@ -41,10 +43,10 @@ public class ActivityAdapter extends BaseAdapter<ActivityAdapter.ViewHolder, Eve
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         Event model = data.get(position);
-//        GlideApp.with(fragment)
-//                .load(model.getActor().getAvatarUrl())
-//                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
-//                .into(holder.userAvatar);
+
+        Glide.with(fragment).load(model.getActor().getAvatarUrl()).into(holder.userAvatar);
+
+
         holder.userName.setText(model.getActor().getLogin());
         holder.time.setText(model.getCreatedAt());
 

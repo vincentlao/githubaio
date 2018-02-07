@@ -1,6 +1,7 @@
 package com.laoning.githubaio.repository.remote.base;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.laoning.githubaio.base.GlobalInfo;
 
@@ -36,6 +37,9 @@ public class RequestInterceptor implements Interceptor {
                 .method(original.method(), original.body());
 
         Request request = requestBuilder.build();
-        return chain.proceed(request);
+        Response response = chain.proceed(request);
+
+        Log.d("aio", "origin reponse body = " + response.body().string());
+        return response;
     }
 }

@@ -44,6 +44,7 @@ public class ApiResponse<T> {
 
         if(response.isSuccessful()) {
             body = response.body();
+            Log.d("aio", "body=" + body.toString());
             errorMessage = null;
         } else {
             String message = null;
