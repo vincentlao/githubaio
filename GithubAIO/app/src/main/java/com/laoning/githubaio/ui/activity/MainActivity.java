@@ -64,15 +64,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         Fragment showFragment = EventFragment.create();
 
         getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_content, showFragment, showFragment.getTag()).commit();
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("News");
+        }
 
         navView = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawer_layout);
-
 
         updateDrawerContent(R.menu.activity_main_drawer);
 
