@@ -8,21 +8,27 @@ import com.google.gson.annotations.SerializedName;
 
 public class Actor {
 
+    @SerializedName("id")
     @ColumnInfo(name = "id")
     private Integer id;
 
+    @SerializedName("login")
     @ColumnInfo(name = "login")
     private String login;
 
+    @SerializedName("display_login")
     @ColumnInfo(name = "display_login")
     private String displayLogin;
 
+    @SerializedName("gravatar_id")
     @ColumnInfo(name = "gravatar_id")
     private String gravatarId;
 
+    @SerializedName("url")
     @ColumnInfo(name = "url")
     private String url;
 
+    @SerializedName("avatar_url")
     @ColumnInfo(name = "avatar_url")
     private String avatarUrl;
 

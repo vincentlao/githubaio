@@ -8,18 +8,23 @@ import com.google.gson.annotations.SerializedName;
 
 public class Org {
 
+    @SerializedName("id")
     @ColumnInfo(name = "id")
     private Integer id;
 
+    @SerializedName("login")
     @ColumnInfo(name = "login")
     private String login;
 
+    @SerializedName("gravatar_id")
     @ColumnInfo(name = "gravatar_id")
     private String gravatarId;
 
+    @SerializedName("url")
     @ColumnInfo(name = "url")
     private String url;
 
+    @SerializedName("avatar_url")
     @ColumnInfo(name = "avatar_url")
     private String avatarUrl;
 

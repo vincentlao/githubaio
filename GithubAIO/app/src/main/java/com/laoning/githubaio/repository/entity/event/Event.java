@@ -7,19 +7,23 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
+
+import com.google.gson.annotations.SerializedName;
 import com.laoning.githubaio.repository.local.base.DateConverter;
 
 import java.util.Date;
 
 @Entity(tableName = "event")
-@TypeConverters(DateConverter.class)
+//@TypeConverters(DateConverter.class)
 public class Event {
 
     @NonNull
     @PrimaryKey
+    @SerializedName("id")
     @ColumnInfo(name = "id")
     private Long id;
 
+    @SerializedName("type")
     @ColumnInfo(name = "type")
     private String type;
 
@@ -32,9 +36,11 @@ public class Event {
     @Embedded(prefix = "playload_")
     private Payload payload;
 
+    @SerializedName("public")
     @ColumnInfo(name = "public")
     private boolean _public;
 
+    @SerializedName("created_at")
     @ColumnInfo(name = "created_at")
     private String createdAt;
 

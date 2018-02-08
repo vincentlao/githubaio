@@ -46,7 +46,7 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiRespon
 
                         @Override
                         public void onFailure(Call<R> call, Throwable throwable) {
-                            Log.d("aio", "onFailure");
+                            Log.d("aio", "onFailure, err = " + throwable.toString());
                             postValue(new ApiResponse<R>(throwable));
                         }
                     });

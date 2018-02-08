@@ -9,12 +9,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.laoning.githubaio.R;
-import com.laoning.githubaio.base.StringUtils;
 import com.laoning.githubaio.repository.entity.event.Event;
 import com.laoning.githubaio.repository.entity.event.Payload;
 import com.laoning.githubaio.ui.fragment.BaseFragment;
 import butterknife.BindView;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -22,10 +20,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 
-public class ActivityAdapter extends BaseAdapter<ActivityAdapter.ViewHolder, Event> {
+public class EventAdapter extends BaseAdapter<EventAdapter.ViewHolder, Event> {
 
 //    @Inject
-    public ActivityAdapter(Context context, BaseFragment fragment) {
+    public EventAdapter(Context context, BaseFragment fragment) {
         super(context, fragment);
     }
 
@@ -44,8 +42,9 @@ public class ActivityAdapter extends BaseAdapter<ActivityAdapter.ViewHolder, Eve
         super.onBindViewHolder(holder, position);
         Event model = data.get(position);
 
-        Glide.with(fragment).load(model.getActor().getAvatarUrl()).into(holder.userAvatar);
-
+//        if (model.getActor().getAvatarUrl() != null) {
+            Glide.with(fragment).load(model.getActor().getAvatarUrl()).into(holder.userAvatar);
+//        }
 
         holder.userName.setText(model.getActor().getLogin());
         holder.time.setText(model.getCreatedAt());
@@ -78,7 +77,7 @@ public class ActivityAdapter extends BaseAdapter<ActivityAdapter.ViewHolder, Eve
             String action = model.getPayload() != null ? model.getPayload().getAction() : "";
 
             String repoName = model.getRepo() != null ? model.getRepo().getName() : "";
-            String actionStr = fullName + " " + action + " on " + repoName;
+            String actionStr = model.getActor().getDisplayLogin() + " " + action + " in " + fullName;
             this.action.setText(actionStr);
         }
 

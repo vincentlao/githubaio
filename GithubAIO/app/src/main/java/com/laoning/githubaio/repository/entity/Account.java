@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by laoning on 01/02/2018.
  */
@@ -13,14 +15,17 @@ import android.support.annotation.NonNull;
 public class Account {
     @NonNull
     @PrimaryKey
+    @SerializedName("name")
     @ColumnInfo(name = "name")
     private String name;
 
     @NonNull
+    @SerializedName("password")
     @ColumnInfo(name = "password")
     private String password;
 
     @NonNull
+    @SerializedName("authorization")
     @ColumnInfo(name = "authorization")
     private String authorization;
 

@@ -41,7 +41,9 @@ dependencies {
     implementation deps.lifecycle.java8
     implementation deps.retrofit.runtime
     implementation deps.retrofit.gson
+
     implementation deps.glide
+    annotationProcessor deps.glide_compiler
 
     implementation deps.dagger.runtime
     implementation deps.dagger.android
@@ -62,8 +64,6 @@ dependencies {
 
     compile "de.hdodenhof:circleimageview:2.1.0"
 
-    compile "com.github.bumptech.glide:glide:4.0.0"
-    annotationProcessor "com.github.bumptech.glide:compiler:4.0.0"
 
     testImplementation deps.junit
     testImplementation deps.mock_web_server

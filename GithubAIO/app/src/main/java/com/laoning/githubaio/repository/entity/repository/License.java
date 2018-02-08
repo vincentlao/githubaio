@@ -8,15 +8,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class License {
 
+    @SerializedName("key")
     @ColumnInfo(name = "key")
     private String key;
 
+    @SerializedName("name")
     @ColumnInfo(name = "name")
     private String name;
 
+    @SerializedName("spdx_id")
     @ColumnInfo(name = "spdx_id")
     private String spdxId;
 
+    @SerializedName("url")
     @ColumnInfo(name = "url")
     private String url;
 

@@ -8,12 +8,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class Repo {
 
+    @SerializedName("id")
     @ColumnInfo(name = "id")
     private Integer id;
 
+    @SerializedName("name")
     @ColumnInfo(name = "name")
     private String name;
 
+    @SerializedName("url")
     @ColumnInfo(name = "url")
     private String url;
 

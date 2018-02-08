@@ -8,54 +8,71 @@ import com.google.gson.annotations.SerializedName;
 
 public class Owner {
 
+    @SerializedName("login")
     @ColumnInfo(name = "login")
     private String login;
-    
+
+    @SerializedName("id")
     @ColumnInfo(name = "id")
     private Integer id;
 
+    @SerializedName("avatar_url")
     @ColumnInfo(name = "avatar_url")
     private String avatarUrl;
 
+    @SerializedName("gravatar_id")
     @ColumnInfo(name = "gravatar_id")
     private String gravatarId;
 
+    @SerializedName("url")
     @ColumnInfo(name = "url")
     private String url;
 
+    @SerializedName("html_url")
     @ColumnInfo(name = "html_url")
     private String htmlUrl;
 
+    @SerializedName("followers_url")
     @ColumnInfo(name = "followers_url")
     private String followersUrl;
 
+    @SerializedName("following_url")
     @ColumnInfo(name = "following_url")
     private String followingUrl;
 
+    @SerializedName("gists_url")
     @ColumnInfo(name = "gists_url")
     private String gistsUrl;
 
+    @SerializedName("starred_url")
     @ColumnInfo(name = "starred_url")
     private String starredUrl;
 
+    @SerializedName("subscriptions_url")
     @ColumnInfo(name = "subscriptions_url")
     private String subscriptionsUrl;
 
+    @SerializedName("organizations_url")
     @ColumnInfo(name = "organizations_url")
     private String organizationsUrl;
 
+    @SerializedName("repos_url")
     @ColumnInfo(name = "repos_url")
     private String reposUrl;
 
+    @SerializedName("events_url")
     @ColumnInfo(name = "events_url")
     private String eventsUrl;
 
+    @SerializedName("received_events_url")
     @ColumnInfo(name = "received_events_url")
     private String receivedEventsUrl;
 
+    @SerializedName("type")
     @ColumnInfo(name = "type")
     private String type;
 
+    @SerializedName("site_admin")
     @ColumnInfo(name = "site_admin")
     private Boolean siteAdmin;
 

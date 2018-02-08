@@ -21,6 +21,8 @@ public class RequestInterceptor implements Interceptor {
 
     private final GlobalInfo globalInfo;
 
+    static boolean first = true;
+
     @Inject
     public RequestInterceptor(GlobalInfo globalInfo) {
         this.globalInfo = globalInfo;
@@ -39,7 +41,14 @@ public class RequestInterceptor implements Interceptor {
         Request request = requestBuilder.build();
         Response response = chain.proceed(request);
 
-        Log.d("aio", "origin reponse body = " + response.body().string());
+
+//        if (first) {
+//            first = false;
+//        } else {
+//            Log.d("aio", "origin reponse body = " + response.body().string());
+//        }
+//
+
         return response;
     }
 }

@@ -33,6 +33,7 @@ public class Payload {
         submitted, edited, dismissed
     }
 
+    @SerializedName("action")
     @ColumnInfo(name = "action")
     private String action;
 

@@ -17,146 +17,285 @@ import com.laoning.githubaio.repository.local.base.DateConverter;
 public class Repository {
     @NonNull
     @PrimaryKey
+    @SerializedName("id")
     @ColumnInfo(name = "id")
     private Integer id;
+
+    @SerializedName("name")
     @ColumnInfo(name = "name")
     private String name;
+
+    @SerializedName("full_name")
     @ColumnInfo(name = "full_name")
     private String fullName;
+
     @Embedded(prefix = "owner_")
     private Owner owner;
+
+    @SerializedName("private")
     @ColumnInfo(name = "private")
     private boolean _private;
+
+    @SerializedName("html_url")
     @ColumnInfo(name = "html_url")
     private String htmlUrl;
+
+    @SerializedName("description")
     @ColumnInfo(name = "description")
     private String description;
+
+    @SerializedName("fork")
     @ColumnInfo(name = "fork")
     private boolean fork;
+
+    @SerializedName("url")
     @ColumnInfo(name = "url")
     private String url;
+
+    @SerializedName("forks_url")
     @ColumnInfo(name = "forks_url")
     private String forksUrl;
+
+    @SerializedName("keys_url")
     @ColumnInfo(name = "keys_url")
     private String keysUrl;
+
+    @SerializedName("collaborators_url")
     @ColumnInfo(name = "collaborators_url")
     private String collaboratorsUrl;
+
+    @SerializedName("teams_url")
     @ColumnInfo(name = "teams_url")
     private String teamsUrl;
+
+    @SerializedName("hooks_url")
     @ColumnInfo(name = "hooks_url")
     private String hooksUrl;
+
+    @SerializedName("issue_events_url")
     @ColumnInfo(name = "issue_events_url")
     private String issueEventsUrl;
+
+    @SerializedName("events_url")
     @ColumnInfo(name = "events_url")
     private String eventsUrl;
+
+    @SerializedName("assignees_url")
     @ColumnInfo(name = "assignees_url")
     private String assigneesUrl;
+
+    @SerializedName("branches_url")
     @ColumnInfo(name = "branches_url")
     private String branchesUrl;
+
+    @SerializedName("tags_url")
     @ColumnInfo(name = "tags_url")
     private String tagsUrl;
+
+    @SerializedName("blobs_url")
     @ColumnInfo(name = "blobs_url")
     private String blobsUrl;
+
+    @SerializedName("git_tags_url")
     @ColumnInfo(name = "git_tags_url")
     private String gitTagsUrl;
+
+    @SerializedName("git_refs_url")
     @ColumnInfo(name = "git_refs_url")
     private String gitRefsUrl;
+
+    @SerializedName("trees_url")
     @ColumnInfo(name = "trees_url")
     private String treesUrl;
+
+    @SerializedName("statuses_url")
     @ColumnInfo(name = "statuses_url")
     private String statusesUrl;
+
+    @SerializedName("languages_url")
     @ColumnInfo(name = "languages_url")
     private String languagesUrl;
+
+    @SerializedName("stargazers_url")
     @ColumnInfo(name = "stargazers_url")
     private String stargazersUrl;
+
+    @SerializedName("contributors_url")
     @ColumnInfo(name = "contributors_url")
     private String contributorsUrl;
+
+    @SerializedName("subscribers_url")
     @ColumnInfo(name = "subscribers_url")
     private String subscribersUrl;
+
+    @SerializedName("subscription_url")
     @ColumnInfo(name = "subscription_url")
     private String subscriptionUrl;
+
+    @SerializedName("commits_url")
     @ColumnInfo(name = "commits_url")
     private String commitsUrl;
+
+    @SerializedName("git_commits_url")
     @ColumnInfo(name = "git_commits_url")
     private String gitCommitsUrl;
+
+    @SerializedName("comments_url")
     @ColumnInfo(name = "comments_url")
     private String commentsUrl;
+
+    @SerializedName("issue_comment_url")
     @ColumnInfo(name = "issue_comment_url")
     private String issueCommentUrl;
+
+    @SerializedName("contents_url")
     @ColumnInfo(name = "contents_url")
     private String contentsUrl;
+
+    @SerializedName("compare_url")
     @ColumnInfo(name = "compare_url")
     private String compareUrl;
+
+    @SerializedName("merges_url")
     @ColumnInfo(name = "merges_url")
     private String mergesUrl;
+
+    @SerializedName("archive_url")
     @ColumnInfo(name = "archive_url")
     private String archiveUrl;
+
+    @SerializedName("downloads_url")
     @ColumnInfo(name = "downloads_url")
     private String downloadsUrl;
+
+    @SerializedName("issues_url")
     @ColumnInfo(name = "issues_url")
     private String issuesUrl;
+
+    @SerializedName("pulls_url")
     @ColumnInfo(name = "pulls_url")
     private String pullsUrl;
+
+    @SerializedName("milestones_url")
     @ColumnInfo(name = "milestones_url")
     private String milestonesUrl;
+
+    @SerializedName("notifications_url")
     @ColumnInfo(name = "notifications_url")
     private String notificationsUrl;
+
+    @SerializedName("labels_url")
     @ColumnInfo(name = "labels_url")
     private String labelsUrl;
+
+    @SerializedName("releases_url")
     @ColumnInfo(name = "releases_url")
     private String releasesUrl;
+
+    @SerializedName("deployments_url")
     @ColumnInfo(name = "deployments_url")
     private String deploymentsUrl;
+
+    @SerializedName("created_at")
     @ColumnInfo(name = "created_at")
     private String createdAt;
+
+    @SerializedName("updated_at")
     @ColumnInfo(name = "updated_at")
     private String updatedAt;
+
+    @SerializedName("pushed_at")
     @ColumnInfo(name = "pushed_at")
     private String pushedAt;
+
+    @SerializedName("git_url")
     @ColumnInfo(name = "git_url")
     private String gitUrl;
+
+    @SerializedName("ssh_url")
     @ColumnInfo(name = "ssh_url")
     private String sshUrl;
+
+    @SerializedName("clone_url")
     @ColumnInfo(name = "clone_url")
     private String cloneUrl;
+
+    @SerializedName("svn_url")
     @ColumnInfo(name = "svn_url")
     private String svnUrl;
+
+    @SerializedName("homepage")
     @ColumnInfo(name = "homepage")
     private String homepage;
+
+    @SerializedName("size")
     @ColumnInfo(name = "size")
     private Integer size;
+
+    @SerializedName("stargazers_count")
     @ColumnInfo(name = "stargazers_count")
     private Integer stargazersCount;
+
+    @SerializedName("watchers_count")
     @ColumnInfo(name = "watchers_count")
     private Integer watchersCount;
+
+    @SerializedName("language")
     @ColumnInfo(name = "language")
     private String language;
+
+    @SerializedName("has_issues")
     @ColumnInfo(name = "has_issues")
     private boolean hasIssues;
+
+    @SerializedName("has_projects")
     @ColumnInfo(name = "has_projects")
     private boolean hasProjects;
+
+    @SerializedName("has_downloads")
     @ColumnInfo(name = "has_downloads")
     private boolean hasDownloads;
+
+    @SerializedName("has_wiki")
     @ColumnInfo(name = "has_wiki")
     private boolean hasWiki;
+
+    @SerializedName("has_pages")
     @ColumnInfo(name = "has_pages")
     private boolean hasPages;
+
+    @SerializedName("forks_count")
     @ColumnInfo(name = "forks_count")
     private Integer forksCount;
+
+    @SerializedName("mirror_url")
     @ColumnInfo(name = "mirror_url")
     private String mirrorUrl;
+
+    @SerializedName("archived")
     @ColumnInfo(name = "archived")
     private boolean archived;
+
+    @SerializedName("open_issues_count")
     @ColumnInfo(name = "open_issues_count")
     private Integer openIssuesCount;
+
     @Embedded(prefix = "license_")
     private License license;
+
+    @SerializedName("forks")
     @ColumnInfo(name = "forks")
     private Integer forks;
+
+    @SerializedName("open_issues")
     @ColumnInfo(name = "open_issues")
     private Integer openIssues;
+
+    @SerializedName("watchers")
     @ColumnInfo(name = "watchers")
     private Integer watchers;
+
+    @SerializedName("default_branch")
     @ColumnInfo(name = "default_branch")
     private String defaultBranch;
 

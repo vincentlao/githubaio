@@ -1,5 +1,8 @@
 package com.laoning.githubaio.repository;
 
+import android.arch.lifecycle.LiveData;
+
+import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.repository.local.GithubDatabase;
 import com.laoning.githubaio.repository.remote.GithubService;
 
@@ -18,5 +21,9 @@ public class UserRepository {
     public UserRepository(GithubDatabase githubDatabase, GithubService githubService) {
         this.githubDatabase = githubDatabase;
         this.githubService = githubService;
+    }
+
+    public LiveData<User> findByLogin(String login) {
+        return githubDatabase.userDao().findByLogin(login);
     }
 }

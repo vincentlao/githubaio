@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,16 +13,15 @@ import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.event.Event;
 import com.laoning.githubaio.repository.remote.base.Resource;
-import com.laoning.githubaio.ui.adapter.ActivityAdapter;
+import com.laoning.githubaio.ui.adapter.EventAdapter;
 import com.laoning.githubaio.viewmodel.MainViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 
-public class EventFragment extends ListFragment<ActivityAdapter> {
+public class EventFragment extends ListFragment<EventAdapter> {
 
     private MainViewModel mainViewModel;
 
@@ -51,7 +49,7 @@ public class EventFragment extends ListFragment<ActivityAdapter> {
 
     @Override
     protected void initFragment(Bundle savedInstanceState) {
-        adapter = new ActivityAdapter(getActivity(), this);
+        adapter = new EventAdapter(getActivity(), this);
         super.initFragment(savedInstanceState);
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
@@ -71,6 +69,7 @@ public class EventFragment extends ListFragment<ActivityAdapter> {
             }
 
             showEvents(eventsResource.data);
+            hideLoading();
         });
     }
 
@@ -83,6 +82,7 @@ public class EventFragment extends ListFragment<ActivityAdapter> {
             }
 
             showEvents(eventsResource.data);
+            hideLoading();
         });
     }
 
@@ -118,7 +118,15 @@ public class EventFragment extends ListFragment<ActivityAdapter> {
     @Override
     protected void onLoadMore(int page) {
         super.onLoadMore(page);
-//        mPresenter.loadEvents(false, page);
+        LiveData<Resource<List<Event>>> events =  mainViewModel.loadEvent(globalInfo.getCurrentUserAccount().getName(), page);
+        events.observe(this, eventsResource -> {
+            if (eventsResource == null || eventsResource.data == null) {
+                return;
+            }
+
+            showEvents(eventsResource.data);
+            hideLoading();
+        });
     }
 
     public void showEvents(List<Event> events) {

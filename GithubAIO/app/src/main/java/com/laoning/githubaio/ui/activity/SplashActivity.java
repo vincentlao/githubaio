@@ -30,12 +30,6 @@ public class SplashActivity extends BaseActivity {
 
     private SplashViewModel splashViewModel;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-
-    @Inject
-    GlobalInfo globalInfo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        AndroidInjection.inject(this);
@@ -50,6 +44,11 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
 
         loadUser();
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_splash;
     }
 
     private void loadUser() {

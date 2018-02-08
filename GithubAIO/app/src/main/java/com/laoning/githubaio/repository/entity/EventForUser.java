@@ -6,6 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
 import com.laoning.githubaio.repository.local.base.IntegerListConverter;
 
 import java.util.List;
@@ -20,9 +21,11 @@ public class EventForUser {
 
     @NonNull
     @PrimaryKey
+    @SerializedName("user_and_page")
     @ColumnInfo(name = "user_and_page")
     private final String userAndPage;
 
+    @SerializedName("event_ids")
     @ColumnInfo(name = "event_ids")
     private final List<Long> eventIds;
 

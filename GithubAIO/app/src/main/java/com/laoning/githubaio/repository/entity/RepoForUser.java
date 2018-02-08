@@ -7,6 +7,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.annotations.SerializedName;
 import com.laoning.githubaio.repository.local.base.IntegerListConverter;
 
 import java.util.List;
@@ -21,9 +22,11 @@ public class RepoForUser {
 
     @NonNull
     @PrimaryKey
+    @SerializedName("login")
     @ColumnInfo(name = "login")
     private final String login;
 
+    @SerializedName("repo_ids")
     @ColumnInfo(name = "repo_ids")
     private final List<Integer> repoIds;
 

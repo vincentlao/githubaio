@@ -7,6 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
 import com.laoning.githubaio.repository.local.base.DateConverter;
 
 import java.util.Date;
@@ -62,116 +63,152 @@ import java.util.Date;
 //        }
 
 @Entity(tableName = "user")
-@TypeConverters(DateConverter.class)
+//@TypeConverters(DateConverter.class)
 public class User {
 
     @NonNull
     @PrimaryKey
+    @SerializedName("id")
     @ColumnInfo(name = "id")
     private int id;
 
+    @SerializedName("login")
     @ColumnInfo(name = "login")
     private String login;
 
+    @SerializedName("avatar_url")
     @ColumnInfo(name = "avatar_url")
     private String avatarUrl;
 
+    @SerializedName("gravatar_id")
     @ColumnInfo(name = "gravatar_id")
     private String gravatarId;
 
+    @SerializedName("url")
     @ColumnInfo(name = "url")
     private String url;
 
+    @SerializedName("html_url")
     @ColumnInfo(name = "html_url")
     private String htmlUrl;
 
+    @SerializedName("followers_url")
     @ColumnInfo(name = "followers_url")
     private String followerUrl;
 
+    @SerializedName("following_url")
     @ColumnInfo(name = "following_url")
     private String followingUrl;
 
+    @SerializedName("gists_url")
     @ColumnInfo(name = "gists_url")
     private String gistsUrl;
 
+    @SerializedName("starred_url")
     @ColumnInfo(name = "starred_url")
     private String starredUrl;
 
+    @SerializedName("subscriptions_url")
     @ColumnInfo(name = "subscriptions_url")
     private String subscriptionsUrl;
 
+    @SerializedName("organizations_url")
     @ColumnInfo(name = "organizations_url")
     private String organizationsUrl;
 
+    @SerializedName("repos_url")
     @ColumnInfo(name = "repos_url")
     private String reposUrl;
 
+    @SerializedName("events_url")
     @ColumnInfo(name = "events_url")
     private String eventsUrl;
 
+    @SerializedName("received_events_url")
     @ColumnInfo(name = "received_events_url")
     private String receivedEventsUrl;
 
+    @SerializedName("type")
     @ColumnInfo(name = "type")
     private String type;
 
+    @SerializedName("site_admin")
     @ColumnInfo(name = "site_admin")
     private boolean siteAdmin;
 
+    @SerializedName("name")
     @ColumnInfo(name = "name")
     private String name;
 
+    @SerializedName("company")
     @ColumnInfo(name = "company")
     private String company;
 
+    @SerializedName("blog")
     @ColumnInfo(name = "blog")
     private String blog;
 
+    @SerializedName("location")
     @ColumnInfo(name = "location")
     private String location;
 
+    @SerializedName("email")
     @ColumnInfo(name = "email")
     private String email;
 
+    @SerializedName("hireable")
     @ColumnInfo(name = "hireable")
     private String hireable;
 
+    @SerializedName("bio")
     @ColumnInfo(name = "bio")
     private String bio;
 
+    @SerializedName("public_repos")
     @ColumnInfo(name = "public_repos")
     private int publicRepos;
 
+    @SerializedName("public_gists")
     @ColumnInfo(name = "public_gists")
     private int publicGists;
 
+    @SerializedName("followers")
     @ColumnInfo(name = "followers")
     private int followers;
 
+    @SerializedName("following")
     @ColumnInfo(name = "following")
     private int following;
 
+    @SerializedName("created_at")
     @ColumnInfo(name = "created_at")
     private String createAt;
 
+    @SerializedName("updated_at")
     @ColumnInfo(name = "updated_at")
     private String updateAt;
 
+    @SerializedName("private_gists")
     @ColumnInfo(name = "private_gists")
     private int privateGists;
 
+    @SerializedName("total_private_repos")
     @ColumnInfo(name = "total_private_repos")
     private int totalPrivateRepos;
 
+    @SerializedName("owned_private_repos")
     @ColumnInfo(name = "owned_private_repos")
     private int ownedPrivateRepos;
 
+    @SerializedName("disk_usage")
     @ColumnInfo(name = "disk_usage")
     private int diskUsage;
 
+    @SerializedName("collaborators")
     @ColumnInfo(name = "collaborators")
     private int collaborators;
 
+    @SerializedName("two_factor_authentication")
     @ColumnInfo(name = "two_factor_authentication")
     private boolean twoFactorAuthentication;
 

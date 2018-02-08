@@ -41,12 +41,6 @@ public class LoginActivity extends BaseActivity {
 
     private LoginViewModel loginViewModel;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-
-    @Inject
-    GlobalInfo globalInfo;
-
     // UI references.
     private AutoCompleteTextView mNameView;
     private EditText mPasswordView;
@@ -88,6 +82,11 @@ public class LoginActivity extends BaseActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_login;
     }
 
     private void attemptLogin() {
