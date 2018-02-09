@@ -1,5 +1,5 @@
 
-package com.laoning.githubaio.repository.entity.repository;
+package com.laoning.githubaio.repository.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 

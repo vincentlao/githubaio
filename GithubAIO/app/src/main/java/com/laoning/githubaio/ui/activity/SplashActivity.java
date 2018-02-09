@@ -46,10 +46,6 @@ public class SplashActivity extends BaseActivity {
         loadUser();
     }
 
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_splash;
-    }
 
     private void loadUser() {
         LiveData<Account> accountLiveData = splashViewModel.getFirstAccountLocally();
@@ -58,14 +54,7 @@ public class SplashActivity extends BaseActivity {
             if (account == null) {
                 showLoginActivity();
             } else {
-                String name = account.getName();
-                String password = account.getPassword();
-                String credentials = name + ":" + password;
-                String authorization = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-
-                globalInfo.getCurrentUserAccount().setName(name);
-                globalInfo.getCurrentUserAccount().setPassword(password);
-                globalInfo.getCurrentUserAccount().setAuthorization(authorization);
+                globalInfo.setCurrentUserAccount(account);
 
                 //too login
                 LiveData<Resource<User>> user = splashViewModel.loginUser();
@@ -105,5 +94,14 @@ public class SplashActivity extends BaseActivity {
                 splashActivity.finish();
             }
         }, 1000);
+    }
+
+    protected void delayFinish(int mills) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, mills);
     }
 }

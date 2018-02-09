@@ -2,7 +2,6 @@ package com.laoning.githubaio.repository.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
@@ -15,24 +14,15 @@ import java.util.List;
  * Created by laoning on 06/02/2018.
  */
 
-@Entity(tableName = "event_for_user", primaryKeys = {"user", "type", "page"})
+@Entity(tableName = "star_for_user", primaryKeys = {"user", "page"})
 @TypeConverters(IntegerListConverter.class)
-public class EventForUser {
+public class StarForUser {
 
-    public enum Type {
-        ReceivedEvent,
-        PerformedEvent,
-    }
 
     @NonNull
     @SerializedName("user")
     @ColumnInfo(name = "user")
     private final String user;
-
-    @NonNull
-    @SerializedName("type")
-    @ColumnInfo(name = "type")
-    private final int type;
 
 
     @NonNull
@@ -41,30 +31,25 @@ public class EventForUser {
     private final int page;
 
 
-    @SerializedName("event_ids")
-    @ColumnInfo(name = "event_ids")
-    private final List<Long> eventIds;
+    @SerializedName("ids")
+    @ColumnInfo(name = "ids")
+    private final List<Long> ids;
 
-    public EventForUser(@NonNull String user,  int type, int page, List<Long> eventIds) {
+    public StarForUser(@NonNull String user, int page, List<Long> ids) {
         this.user = user;
-        this.type = type;
         this.page = page;
-        this.eventIds = eventIds;
+        this.ids = ids;
     }
 
     public String getUser() {
         return user;
     }
 
-    public int getType() {
-        return  type;
-    }
-
     public int getPage() {
         return page;
     }
 
-    public List<Long> getEventIds() {
-        return eventIds;
+    public List<Long> getIds() {
+        return ids;
     }
 }

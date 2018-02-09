@@ -29,6 +29,16 @@ public class Account {
     @ColumnInfo(name = "authorization")
     private String authorization;
 
+    @SerializedName("avatar_url")
+    @ColumnInfo(name = "avatar_url")
+    private String avatarUrl;
+
+
+    @SerializedName("create_at")
+    @ColumnInfo(name = "create_at")
+    private String createAt;
+
+
     public Account() {
     }
 
@@ -52,8 +62,23 @@ public class Account {
         this.authorization = authorization;
     }
 
-
     public String getAuthorization() {
         return authorization;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getCreateAt() {
+        return createAt;
     }
 }

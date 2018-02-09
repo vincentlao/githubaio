@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModel;
 
 import com.laoning.githubaio.AppExecutors;
 import com.laoning.githubaio.base.GlobalInfo;
-import com.laoning.githubaio.repository.AccountRepository;
 import com.laoning.githubaio.repository.EventRepository;
 import com.laoning.githubaio.repository.UserRepository;
 import com.laoning.githubaio.repository.entity.event.Event;
@@ -34,8 +33,12 @@ public class MainViewModel extends ViewModel {
         this.appExecutors = appExecutors;
     }
 
-    public LiveData<Resource<List<Event>>> loadEvent(String user, int page) {
-        return eventRepository.loadEvent(globalInfo.getCurrentUserAccount().getName(), page);
+    public LiveData<Resource<List<Event>>> loadUserReceivedEvent(String user, int page) {
+        return eventRepository.loadUserReceivedEvent(user, page);
+    }
+
+    public LiveData<Resource<List<Event>>> loadUserPerformedEvent(String user, int page) {
+        return eventRepository.loadUserPerformedEvent(user, page);
     }
 
     public LiveData<User> findUserByLogin(String login) {

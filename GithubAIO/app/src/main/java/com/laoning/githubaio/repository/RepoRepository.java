@@ -22,14 +22,14 @@ public class RepoRepository {
     private GithubService githubService;
     private final AppExecutors appExecutors;
 
-    @Inject
+
     public RepoRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
         this.githubDatabase = githubDatabase;
         this.githubService = githubService;
         this.appExecutors = appExecutors;
     }
 
-//    public LiveData<List<Event>> loadEvent(String login) {
+//    public LiveData<List<Event>> loadUserReceivedEvent(String login) {
 //        return githubDatabase.eventDao().loadById();
 //    }
 }

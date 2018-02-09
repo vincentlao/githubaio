@@ -20,11 +20,11 @@ import java.util.List;
 @Dao
 public interface EventDao {
 
-    @Query("SELECT * FROM event_for_user WHERE user_and_page = :userAndPage")
-    LiveData<EventForUser> loadEventIdsByUserAndPage(String userAndPage);
+    @Query("SELECT * FROM event_for_user WHERE user = :user and type = :type and page = :page")
+    LiveData<EventForUser> loadEventIdsForUser(String user, int type, int page);
 
-    @Query("SELECT * FROM event_for_user WHERE user_and_page = :userAndPage")
-    EventForUser loadEventIdsByUserAndPageSync(String userAndPage);
+    @Query("SELECT * FROM event_for_user WHERE user = :user and type = :type and page = :page")
+    EventForUser loadEventIdsForUserSync(String user, int type, int page);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(EventForUser events);

@@ -8,6 +8,8 @@ import com.laoning.githubaio.GithubAioApp;
 import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.AccountRepository;
 import com.laoning.githubaio.repository.EventRepository;
+import com.laoning.githubaio.repository.RepoRepository;
+import com.laoning.githubaio.repository.UserRepository;
 import com.laoning.githubaio.repository.local.GithubDatabase;
 import com.laoning.githubaio.repository.remote.GithubService;
 
@@ -76,7 +78,6 @@ public class AppModule {
     @Singleton
     public GithubDatabase provideGithubDatabase(Application app) {
         return Room.databaseBuilder(app, GithubDatabase.class,"github_aio.db").build();
-//        return Room.inMemoryDatabaseBuilder(app, GithubDatabase.class).build();
     }
 
     @Provides
@@ -89,5 +90,18 @@ public class AppModule {
     @Singleton
     public EventRepository provideEventRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
         return new EventRepository(githubDatabase, githubService, appExecutors);
+    }
+
+    @Provides
+    @Singleton
+    public RepoRepository provideRepoRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
+        return new RepoRepository(githubDatabase, githubService, appExecutors);
+    }
+
+
+    @Provides
+    @Singleton
+    public UserRepository provideUserRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
+        return new UserRepository(githubDatabase, githubService, appExecutors);
     }
 }

@@ -12,11 +12,15 @@ import javax.inject.Singleton;
 @Singleton
 public class GlobalInfo {
 
-    private Account currentUserAccount = new Account();
+    private Account currentUserAccount;
 
     @Inject
     public GlobalInfo() {
 
+    }
+
+    public void setCurrentUserAccount(Account account) {
+        this.currentUserAccount = account;
     }
 
     public Account getCurrentUserAccount() {

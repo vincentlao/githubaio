@@ -8,8 +8,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.laoning.githubaio.repository.entity.Owner;
 import com.laoning.githubaio.repository.local.base.DateConverter;
 
 @Entity(tableName = "repository")

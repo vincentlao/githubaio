@@ -22,9 +22,6 @@ import dagger.android.support.HasSupportFragmentInjector;
  */
 
 public abstract class BaseActivity extends AppCompatActivity implements HasSupportFragmentInjector {
-
-    private Unbinder unbinder;
-
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
@@ -35,42 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity implements HasSuppo
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-//        setContentView(getContentView());
-//        unbinder = ButterKnife.bind(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        unbinder.unbind();
-    }
-
-    protected void delayFinish() {
-        delayFinish(1000);
-    }
-
-    protected void delayFinish(int mills) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        }, mills);
-    }
-
-    @Override
     public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
         return dispatchingAndroidInjector;
     }
-
-
-    /**
-     * 获取ContentView id
-     * @return
-     */
-    @LayoutRes
-    protected abstract int getContentView();
 }

@@ -30,8 +30,12 @@ public interface GithubService {
     @GET("users/{user}")
     LiveData<ApiResponse<User>> loadUser(@Path("user") String user);
 
+    @GET("/users/{user}/events")
+    LiveData<ApiResponse<List<Event>>> loadUserPerformedEvent(@Path("user") String name, @Query("page") int page);
+
     @GET("/users/{user}/received_events")
-    LiveData<ApiResponse<List<Event>>> loadEvent(@Path("user") String name,  @Query("page") int page);
+    LiveData<ApiResponse<List<Event>>> loadUserReceivedEvent(@Path("user") String name, @Query("page") int page);
+
 
     @NonNull
     @GET("search/users")

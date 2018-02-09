@@ -84,10 +84,6 @@ public class LoginActivity extends BaseActivity {
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_login;
-    }
 
     private void attemptLogin() {
         // Reset errors.
@@ -125,9 +121,11 @@ public class LoginActivity extends BaseActivity {
             String credentials = name + ":" + password;
             String authorization = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
 
-            globalInfo.getCurrentUserAccount().setName(name);
-            globalInfo.getCurrentUserAccount().setPassword(password);
-            globalInfo.getCurrentUserAccount().setAuthorization(authorization);
+            Account account = new Account();
+            account.setName(name);
+            account.setPassword(password);
+            account.setAuthorization(authorization);
+            globalInfo.setCurrentUserAccount(account);
 
             //too login
             LiveData<Resource<User>> user = loginViewModel.loginUser();
@@ -141,11 +139,11 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     Log.d("aio", "login success, login = " + githubUser.data.getLogin());
 
-                    Account account = new Account();
-                    account.setName(name);
-                    account.setPassword(password);
-                    account.setAuthorization(authorization);
+                    account.setAvatarUrl(githubUser.data.getAvatarUrl());
+                    account.setCreateAt(githubUser.data.getCreateAt());
+
                     loginViewModel.saveUserAccount(account);
+                    globalInfo.setCurrentUserAccount(account);
 
                     startActivity(new Intent(this, MainActivity.class));
                     finish();;

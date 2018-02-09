@@ -30,7 +30,6 @@ public class AccountRepository {
     private final GithubService githubService;
     private final AppExecutors appExecutors;
 
-    @Inject
     public AccountRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
         this.githubDatabase = githubDatabase;
         this.githubService = githubService;

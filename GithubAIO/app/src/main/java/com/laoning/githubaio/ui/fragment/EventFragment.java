@@ -62,7 +62,7 @@ public class EventFragment extends ListFragment<EventAdapter> {
 
     @Override
     protected void onLoadData() {
-        LiveData<Resource<List<Event>>> events =  mainViewModel.loadEvent(globalInfo.getCurrentUserAccount().getName(), 1);
+        LiveData<Resource<List<Event>>> events =  mainViewModel.loadUserReceivedEvent(globalInfo.getCurrentUserAccount().getName(), 1);
         events.observe(this, eventsResource -> {
             if (eventsResource == null || eventsResource.data == null) {
                 return;
@@ -75,7 +75,7 @@ public class EventFragment extends ListFragment<EventAdapter> {
 
     @Override
     protected void onReLoadData() {
-        LiveData<Resource<List<Event>>> events =  mainViewModel.loadEvent(globalInfo.getCurrentUserAccount().getName(), 1);
+        LiveData<Resource<List<Event>>> events =  mainViewModel.loadUserReceivedEvent(globalInfo.getCurrentUserAccount().getName(), 1);
         events.observe(this, eventsResource -> {
             if (eventsResource == null || eventsResource.data == null) {
                 return;
@@ -118,7 +118,7 @@ public class EventFragment extends ListFragment<EventAdapter> {
     @Override
     protected void onLoadMore(int page) {
         super.onLoadMore(page);
-        LiveData<Resource<List<Event>>> events =  mainViewModel.loadEvent(globalInfo.getCurrentUserAccount().getName(), page);
+        LiveData<Resource<List<Event>>> events =  mainViewModel.loadUserReceivedEvent(globalInfo.getCurrentUserAccount().getName(), page);
         events.observe(this, eventsResource -> {
             if (eventsResource == null || eventsResource.data == null) {
                 return;
