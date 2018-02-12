@@ -25,29 +25,38 @@ import com.laoning.githubaio.AppExecutors;
  */
 public abstract class NetworkBoundResource<ResultType, ResponseType> {
     private final AppExecutors appExecutors;
-    private final boolean ignoreDB;
-    private final boolean ignoreLoading;
 
     private final MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
 
     @MainThread
-    public NetworkBoundResource(AppExecutors appExecutors, boolean ignoreDB, boolean ignoreLoading) {
+    public NetworkBoundResource(AppExecutors appExecutors) {
         this.appExecutors = appExecutors;
-        this.ignoreDB = ignoreDB;
-        this.ignoreLoading = ignoreLoading;
+        fetchFromNetwork();
+    }
 
-        if (!ignoreLoading) {
-            result.setValue(Resource.loading(null));
-        }
+    private void fetchFromNetwork() {
+        LiveData<ApiResponse<ResponseType>> apiResponse = createCall();
+        result.addSource(apiResponse, response -> {
+            Log.d("aio", "apisource fired");
+            result.removeSource(apiResponse);
 
-        LiveData<ResultType> dbSource = loadFromDb();
-        result.addSource(dbSource, data -> {
-            Log.d("aio", "dbsource fired");
-            result.removeSource(dbSource);
-            if (shouldFetch(data)) {
-                fetchFromNetwork(dbSource);
+            Log.d("aio", "error msg = " + response.errorMessage);
+
+            if (response.isSuccessful()) {
+                Log.d("aio", "response code = " + response.code);
+                Log.d("aio", "response msg = " + response.body.toString());
+
+                ResultType data = processResponse(response);
+                saveCallResult(data);
+                appExecutors.mainThread().execute(() -> {
+                    setValue(Resource.success(data));
+                });
             } else {
-                result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
+                Log.d("aio", "Retrofit request failed");
+
+                appExecutors.mainThread().execute(() -> {
+                    setValue(Resource.error(response.errorMessage, null));
+                });
             }
         });
     }
@@ -59,68 +68,15 @@ public abstract class NetworkBoundResource<ResultType, ResponseType> {
         }
     }
 
-    private void fetchFromNetwork(final LiveData<ResultType> dbSource) {
-        Log.d("aio", "begin fetch from network");
-        LiveData<ApiResponse<ResponseType>> apiResponse = createCall();
-        // we re-attach dbSource as a new source, it will dispatch its latest value quickly
-//        result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
-        result.addSource(apiResponse, response -> {
-            Log.d("aio", "apisource fired");
-            result.removeSource(apiResponse);
-//            result.removeSource(dbSource);
-            //noinspection ConstantConditions
-            Log.d("aio", "error msg = " + response.errorMessage);
-
-            if (response.isSuccessful()) {
-                Log.d("aio", "Retrofit request success");
-                Log.d("aio", "response code = " + response.code);
-                Log.d("aio", "response msg = " + response.body.toString());
-                appExecutors.diskIO().execute(() -> {
-                    saveCallResult(processResponse(response));
-                    appExecutors.mainThread().execute(() ->
-                            // we specially request a new live data,
-                            // otherwise we will get immediately last cached value,
-                            // which may not be updated with latest results received from network.
-                            result.addSource(loadFromDb(), newData -> {
-                                Log.d("aio", "dbsource fired");
-                                if (newData != null) {
-                                    Log.d("aio", "newData=" + newData.toString());
-                                }
-                                setValue(Resource.success(newData));
-                            })
-                    );
-                });
-            } else {
-                Log.d("aio", "Retrofit request failed");
-
-                onFetchFailed();
-                result.addSource(dbSource,
-                        newData -> setValue(Resource.error(response.errorMessage, newData)));
-            }
-        });
-    }
-
-    protected void onFetchFailed() {
-    }
-
     public LiveData<Resource<ResultType>> asLiveData() {
         return result;
     }
 
     @WorkerThread
-    protected ResponseType processResponse(ApiResponse<ResponseType> response) {
-        return response.body;
-    }
+    protected abstract  ResultType processResponse(ApiResponse<ResponseType> response);
 
     @WorkerThread
-    protected abstract void saveCallResult(@NonNull ResponseType item);
-
-    @MainThread
-    protected abstract boolean shouldFetch(@Nullable ResultType data);
-
-    @NonNull
-    @MainThread
-    protected abstract LiveData<ResultType> loadFromDb();
+    protected abstract void saveCallResult(@NonNull ResultType result);
 
     @NonNull
     @MainThread

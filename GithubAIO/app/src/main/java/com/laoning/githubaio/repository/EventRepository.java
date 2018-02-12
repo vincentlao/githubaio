@@ -14,7 +14,7 @@ import com.laoning.githubaio.repository.entity.event.Event;
 import com.laoning.githubaio.repository.local.GithubDatabase;
 import com.laoning.githubaio.repository.remote.GithubService;
 import com.laoning.githubaio.repository.remote.base.ApiResponse;
-import com.laoning.githubaio.repository.remote.base.NetworkBoundResource;
+import com.laoning.githubaio.repository.remote.base.NetworkDBBoundResource;
 import com.laoning.githubaio.repository.remote.base.RateLimiter;
 import com.laoning.githubaio.repository.remote.base.Resource;
 
@@ -23,25 +23,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Created by laoning on 06/02/2018.
  */
 
+@Singleton
 public class EventRepository {
 
-    private GithubDatabase githubDatabase;
-    private GithubService githubService;
-    private final AppExecutors appExecutors;
+    @Inject GithubDatabase githubDatabase;
+    @Inject GithubService githubService;
+    @Inject AppExecutors appExecutors;
+
     private RateLimiter<String> eventListRateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
 
-    public EventRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
-        this.githubDatabase = githubDatabase;
-        this.githubService = githubService;
-        this.appExecutors = appExecutors;
+    @Inject
+    public EventRepository() {
     }
 
     public LiveData<Resource<List<Event>>> loadUserReceivedEvent(String user, int page) {
-        return new NetworkBoundResource<List<Event>, List<Event>>(appExecutors, true, true) {
+        return new NetworkDBBoundResource<List<Event>, List<Event>>(appExecutors, true, true) {
             @Override
             protected void saveCallResult(@NonNull List<Event> events) {
                 Type type=new TypeToken<List<Event>>(){}.getType();
@@ -106,7 +109,7 @@ public class EventRepository {
 
     public LiveData<Resource<List<Event>>> loadUserPerformedEvent(String user, int page) {
 
-        return new NetworkBoundResource<List<Event>, List<Event>>(appExecutors, true, true) {
+        return new NetworkDBBoundResource<List<Event>, List<Event>>(appExecutors, true, true) {
             @Override
             protected void saveCallResult(@NonNull List<Event> events) {
                 Type type=new TypeToken<List<Event>>(){}.getType();

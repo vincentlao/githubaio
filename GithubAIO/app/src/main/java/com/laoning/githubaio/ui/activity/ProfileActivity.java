@@ -6,11 +6,16 @@ import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 import com.bumptech.glide.Glide;
 import com.laoning.githubaio.R;
@@ -26,6 +32,8 @@ import com.laoning.githubaio.base.BundleHelper;
 import com.laoning.githubaio.base.StringUtils;
 import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.ui.adapter.FragmentPagerModel;
+import com.laoning.githubaio.ui.fragment.EventFragment;
+import com.laoning.githubaio.ui.fragment.RepositoriesFragment;
 import com.laoning.githubaio.viewmodel.MainViewModel;
 
 /**
@@ -99,10 +107,13 @@ public class ProfileActivity extends PagerActivity {
 
         Bundle bundle = this.getIntent().getExtras();
         userName = bundle.getString("name");
+
+        setTransparentStatusBar();
+        setToolbarBackEnable();
+
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
 
         LiveData<User> userLiveData = mainViewModel.findUserByLogin(userName);
-
         userLiveData.observe(this, user -> {
             showProfileInfo(user);
         });
@@ -118,7 +129,7 @@ public class ProfileActivity extends PagerActivity {
         setUserAvatar(user);
         joinedTime.setText(getString(R.string.joined_at).concat(" ")
                 .concat(user.getCreateAt()));
-        location.setText(user.getLocation());
+        location.setText(user.getLogin());
 
         if (pagerAdapter.getCount() == 0) {
             pagerAdapter.setPagerList(FragmentPagerModel.createProfilePagerList(this, user, getFragments()));
@@ -152,16 +163,6 @@ public class ProfileActivity extends PagerActivity {
     }
 
     private void setUserAvatar(User user) {
-//        if (isAvatarSetted || StringUtils.isBlank(mPresenter.getUserAvatar())) return;
-//        isAvatarSetted = true;
-//        GlideApp.with(getActivity())
-//                .load(mPresenter.getUserAvatar())
-//                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
-//                .into(userImageViewBg);
-//        GlideApp.with(getActivity())
-//                .load(mPresenter.getUserAvatar())
-//                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
-//                .into(userImageView);
         Glide.with(this).load(user.getAvatarUrl()).into(userImageView);
     }
 
@@ -174,20 +175,17 @@ public class ProfileActivity extends PagerActivity {
 
     @Override
     public int getPagerSize() {
-        return 3;
+        return 2;
     }
 
     @Override
     protected int getFragmentPosition(Fragment fragment) {
-//        if (fragment instanceof ProfileInfoFragment) {
-//            return 0;
-//        } else if (fragment instanceof ActivityFragment) {
-//            return 1;
-//        } else if (fragment instanceof RepositoriesFragment) {
-//            return 2;
-//        } else
-//            return -1;
-
-        return 0;
+        if (fragment instanceof EventFragment) {
+            return 0;
+        } else if (fragment instanceof RepositoriesFragment) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 }

@@ -105,7 +105,8 @@ public abstract  class ListFragment<A extends BaseAdapter> extends BaseFragment 
                 LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
                 int lastPosition = linearManager.findLastVisibleItemPosition();
                 if(lastPosition == adapter.getItemCount() - 1){
-                    onLoadMore(++curPage);
+                    ++curPage;
+                    onLoadMore();
                 }
             }
         }
@@ -215,7 +216,7 @@ public abstract  class ListFragment<A extends BaseAdapter> extends BaseFragment 
         return 0;
     }
 
-    protected void onLoadMore(int page){
+    protected void onLoadMore(){
 //        if(page == 3 && PrefUtils.isDoubleClickTitleTipAble()){
 //            showOperationTip(R.string.double_click_toolbar_tip);
 //            PrefUtils.set(PrefUtils.DOUBLE_CLICK_TITLE_TIP_ABLE, false);

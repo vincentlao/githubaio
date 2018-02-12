@@ -12,6 +12,7 @@ import android.view.View;
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.event.Event;
+import com.laoning.githubaio.repository.entity.repository.Repository;
 import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.adapter.EventAdapter;
 import com.laoning.githubaio.viewmodel.MainViewModel;
@@ -62,28 +63,12 @@ public class EventFragment extends ListFragment<EventAdapter> {
 
     @Override
     protected void onLoadData() {
-        LiveData<Resource<List<Event>>> events =  mainViewModel.loadUserReceivedEvent(globalInfo.getCurrentUserAccount().getName(), 1);
-        events.observe(this, eventsResource -> {
-            if (eventsResource == null || eventsResource.data == null) {
-                return;
-            }
-
-            showEvents(eventsResource.data);
-            hideLoading();
-        });
+        LoadPage();
     }
 
     @Override
     protected void onReLoadData() {
-        LiveData<Resource<List<Event>>> events =  mainViewModel.loadUserReceivedEvent(globalInfo.getCurrentUserAccount().getName(), 1);
-        events.observe(this, eventsResource -> {
-            if (eventsResource == null || eventsResource.data == null) {
-                return;
-            }
-
-            showEvents(eventsResource.data);
-            hideLoading();
-        });
+        LoadPage();
     }
 
     @Override
@@ -116,9 +101,13 @@ public class EventFragment extends ListFragment<EventAdapter> {
     }
 
     @Override
-    protected void onLoadMore(int page) {
-        super.onLoadMore(page);
-        LiveData<Resource<List<Event>>> events =  mainViewModel.loadUserReceivedEvent(globalInfo.getCurrentUserAccount().getName(), page);
+    protected void onLoadMore() {
+        super.onLoadMore();
+        LoadPage();
+    }
+
+    private void LoadPage() {
+        LiveData<Resource<List<Event>>> events =  mainViewModel.loadUserReceivedEvent(globalInfo.getCurrentUserAccount().getName(), getCurPage());
         events.observe(this, eventsResource -> {
             if (eventsResource == null || eventsResource.data == null) {
                 return;
@@ -133,11 +122,4 @@ public class EventFragment extends ListFragment<EventAdapter> {
         adapter.setData(events);
         postNotifyDataSetChanged();
     }
-
-    @Override
-    public void onFragmentShowed() {
-        super.onFragmentShowed();
-//        if (mPresenter != null) mPresenter.prepareLoadData();
-    }
-
 }

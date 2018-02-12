@@ -2,10 +2,7 @@ package com.laoning.githubaio.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,33 +14,31 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.laoning.githubaio.R;
-import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.base.StringUtils;
-import com.laoning.githubaio.repository.base.LiveDataTask;
 import com.laoning.githubaio.repository.entity.Account;
-import com.laoning.githubaio.repository.entity.event.Event;
+import com.laoning.githubaio.repository.entity.repository.Repository;
 import com.laoning.githubaio.repository.entity.user.User;
-import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.fragment.EventFragment;
+import com.laoning.githubaio.ui.fragment.RepositoriesFragment;
 import com.laoning.githubaio.viewmodel.MainViewModel;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.inject.Inject;
-
 import butterknife.BindView;
-import dagger.android.AndroidInjection;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Unbinder unbinder;
+
+    @BindView(R.id.toolbar) @Nullable
+    protected Toolbar toolbar;
 
     @BindView(R.id.nav_view) @Nullable
     protected NavigationView navView;
@@ -52,7 +47,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected DrawerLayout drawerLayout;
 
     private MainViewModel mainViewModel;
-
 
     private int selectedPage = R.id.nav_news;
 
@@ -84,17 +78,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
-
         setContentView(R.layout.activity_main);
+        unbinder = ButterKnife.bind(this);
+        initView(savedInstanceState);
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
+
+    protected void initView(Bundle savedInstanceState) {
         setSupportActionBar(toolbar);
-
-
-        navView = findViewById(R.id.nav_view);
-        drawerLayout = findViewById(R.id.drawer_layout);
 
         navView.setNavigationItemSelectedListener(this);
 
@@ -102,14 +99,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        initView(savedInstanceState);
-    }
-
-
-
-    protected void initView(Bundle savedInstanceState) {
         selectedPage = R.id.nav_news;
         updateFragmentByNavId(selectedPage);
+        updateSelfInfo();
+    }
+
+    private void updateFragmentByNavId(int id){
+        if(FRAGMENT_NAV_ID_LIST.contains(id)){
+            updateTitle(id);
+            loadFragment(id);
+        }
+    }
+
+    private void updateSelfInfo() {
 
         ImageView avatar = navView.getHeaderView(0).findViewById(R.id.avatar);
         TextView name = navView.getHeaderView(0).findViewById(R.id.name);
@@ -125,18 +127,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             String joinTime = getString(R.string.joined_at).concat(" ").concat(user.getCreateAt());
             createDate.setText(StringUtils.isBlank(user.getBio()) ? joinTime : user.getBio());
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
-
-    private void updateFragmentByNavId(int id){
-        if(FRAGMENT_NAV_ID_LIST.contains(id)){
-            updateTitle(id);
-            loadFragment(id);
-        }
     }
 
     private void updateTitle(int itemId) {
@@ -172,6 +162,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         switch (itemId) {
             case R.id.nav_news:
                 return EventFragment.create();
+            case R.id.nav_owned:
+                return RepositoriesFragment.create(RepositoriesFragment.RepositoriesType.OWNED, globalInfo.getCurrentUserAccount().getName());
         }
         return null;
     }
@@ -222,6 +214,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -234,6 +231,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        closeDrawer();
         int id = item.getItemId();
 
         if(FRAGMENT_NAV_ID_LIST.contains(id)){
@@ -256,5 +254,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    protected final void openDrawer(boolean isStartDrawer) {
+        if (drawerLayout != null) {
+            drawerLayout.openDrawer(isStartDrawer ? GravityCompat.START : GravityCompat.END);
+        }
+    }
+
+    protected final void closeDrawer() {
+        if (drawerLayout != null) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START))
+                drawerLayout.closeDrawer(GravityCompat.START);
+            if (drawerLayout.isDrawerOpen(GravityCompat.END))
+                drawerLayout.closeDrawer(GravityCompat.END);
+        }
     }
 }

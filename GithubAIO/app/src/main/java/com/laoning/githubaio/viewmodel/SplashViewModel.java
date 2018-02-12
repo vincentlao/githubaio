@@ -18,17 +18,19 @@ import javax.inject.Inject;
 public class SplashViewModel extends ViewModel {
 
     private LiveData<Account> firstAccountLocally;
-    private final AccountRepository accountRepository;
-    private final GlobalInfo globalInfo;
+
+    @Inject AccountRepository accountRepository;
+    @Inject GlobalInfo globalInfo;
 
     @Inject
-    public SplashViewModel(AccountRepository accountRepository, GlobalInfo globalInfo) {
-        this.accountRepository = accountRepository;
-        this.globalInfo = globalInfo;
-        firstAccountLocally = accountRepository.getFirstAccountLocally();
+    public SplashViewModel() {
+
     }
 
     public LiveData<Account> getFirstAccountLocally() {
+        if (firstAccountLocally == null) {
+            firstAccountLocally = accountRepository.getFirstAccountLocally();
+        }
         return firstAccountLocally;
     }
 

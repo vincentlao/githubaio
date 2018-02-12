@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.GlobalInfo;
@@ -34,5 +35,14 @@ public abstract class BaseActivity extends AppCompatActivity implements HasSuppo
     @Override
     public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
         return dispatchingAndroidInjector;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

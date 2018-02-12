@@ -8,6 +8,7 @@ import com.laoning.githubaio.base.GlobalInfo;
 import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -17,15 +18,13 @@ import okhttp3.Response;
  * Created by laoni on 2018-2-3.
  */
 
+@Singleton
 public class RequestInterceptor implements Interceptor {
 
-    private final GlobalInfo globalInfo;
-
-    static boolean first = true;
+    @Inject GlobalInfo globalInfo;
 
     @Inject
-    public RequestInterceptor(GlobalInfo globalInfo) {
-        this.globalInfo = globalInfo;
+    public RequestInterceptor() {
     }
 
     @Override

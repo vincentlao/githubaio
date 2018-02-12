@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.ui.fragment.BaseFragment;
+import com.laoning.githubaio.ui.fragment.EventFragment;
+import com.laoning.githubaio.ui.fragment.RepositoriesFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,15 +56,11 @@ public class FragmentPagerModel {
 //        ));
 //    }
 
-    public static List<FragmentPagerModel> createProfilePagerList(Context context, final User user
-            , @NonNull ArrayList<Fragment> fragments) {
+    public static List<FragmentPagerModel> createProfilePagerList(Context context, final User user, @NonNull ArrayList<Fragment> fragments) {
         List<FragmentPagerModel> list = new ArrayList<>();
-//        list.add(new FragmentPagerModel(context.getString(R.string.info),
-//                getFragment(fragments, 0, () -> ProfileInfoFragment.create(user))));
-//        list.add(new FragmentPagerModel(context.getString(R.string.activity),
-//                getFragment(fragments, 1, () -> ActivityFragment.create(ActivityFragment.ActivityType.User, user.getLogin(), null))));
-//            list.add(new FragmentPagerModel(context.getString(R.string.starred),
-//                    getFragment(fragments, 2, () -> RepositoriesFragment.create(RepositoriesFragment.RepositoriesType.STARRED, user.getLogin()))));
+//        list.add(new FragmentPagerModel(context.getString(R.string.info), getFragment(fragments, 0, () -> ProfileInfoFragment.create(user))));
+        list.add(new FragmentPagerModel(context.getString(R.string.activity), getFragment(fragments, 0, () -> EventFragment.create())));
+        list.add(new FragmentPagerModel(context.getString(R.string.starred), getFragment(fragments, 1, () -> RepositoriesFragment.create(RepositoriesFragment.RepositoriesType.STARRED, user.getLogin()))));
         return setPagerFragmentFlag(list);
     }
 //
@@ -157,8 +155,7 @@ public class FragmentPagerModel {
         return list;
     }
 
-    private static BaseFragment getFragment(ArrayList<Fragment> fragments
-            , int position, FragmentCreator fragmentCreator){
+    private static BaseFragment getFragment(ArrayList<Fragment> fragments, int position, FragmentCreator fragmentCreator){
         Fragment fragment  = fragments.get(position);
         if(fragment == null){
             fragment = fragmentCreator.createFragment();

@@ -22,17 +22,11 @@ public class LoginViewModel extends ViewModel {
     private LiveData<Account> firstAccountLocally;
     private LiveData<List<Account>> listLiveData;
 
-    private final AccountRepository accountRepository;
-    private final GlobalInfo globalInfo;
-    private final AppExecutors appExecutors;
+    @Inject AccountRepository accountRepository;
+    @Inject GlobalInfo globalInfo;
 
     @Inject
-    public LoginViewModel(AccountRepository accountRepository, GlobalInfo globalInfo, AppExecutors appExecutors) {
-        this.accountRepository = accountRepository;
-        this.globalInfo = globalInfo;
-        this.appExecutors = appExecutors;
-        firstAccountLocally = accountRepository.getFirstAccountLocally();
-        listLiveData = accountRepository.loadAccounts();
+    public LoginViewModel() {
     }
 
     public void saveUserAccount(Account githubAccount) {
@@ -40,10 +34,18 @@ public class LoginViewModel extends ViewModel {
     }
 
     public LiveData<Account> getFirstAccountLocally() {
+        if (firstAccountLocally == null) {
+            firstAccountLocally = accountRepository.getFirstAccountLocally();
+        }
+
         return firstAccountLocally;
     }
 
     public LiveData<List<Account>> loadAccountsLocally() {
+        if (listLiveData == null) {
+            listLiveData = accountRepository.loadAccounts();
+        }
+
         return listLiveData;
     }
 

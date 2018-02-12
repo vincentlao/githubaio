@@ -168,7 +168,6 @@ public interface GithubService {
 
     @NonNull @GET("user/repos")
     LiveData<ApiResponse<List<Repository>>> getUserRepos(
-            @Header("forceNetWork") boolean forceNetWork,
             @Query("page") int page,
             @Query("type") String type,
             @Query("sort") String sort,

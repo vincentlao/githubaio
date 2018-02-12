@@ -1,6 +1,8 @@
 package com.laoning.githubaio.ui.fragment;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,11 +14,17 @@ import android.view.View;
 
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.BundleHelper;
+import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.entity.repository.Repository;
+import com.laoning.githubaio.repository.remote.base.Resource;
+import com.laoning.githubaio.ui.adapter.EventAdapter;
 import com.laoning.githubaio.ui.adapter.RepositoriesAdapter;
+import com.laoning.githubaio.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by laoni on 2018-2-9.
@@ -24,16 +32,20 @@ import java.util.List;
 
 
 public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
+    private MainViewModel mainViewModel;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    GlobalInfo globalInfo;
 
     public enum RepositoriesType{
         OWNED, PUBLIC, STARRED, TRENDING, SEARCH, FORKS, TRACE, BOOKMARK, COLLECTION, TOPIC
     }
 
-    public static RepositoriesFragment create(@NonNull RepositoriesType type,
-                                              @NonNull String user){
+    public static RepositoriesFragment create(@NonNull RepositoriesType type, @NonNull String user){
         RepositoriesFragment fragment = new RepositoriesFragment();
-        fragment.setArguments(BundleHelper.builder().put("type", type)
-                .put("user", user).build());
+        fragment.setArguments(BundleHelper.builder().put("type", type).put("user", user).build());
         return fragment;
     }
 
@@ -69,24 +81,6 @@ public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
 
 
     @Override
-    protected void onLoadData() {
-//        LiveData<Resource<List<Event>>> events =  mainViewModel.loadUserReceivedEvent(globalInfo.getCurrentUserAccount().getName(), 1);
-//        events.observe(this, eventsResource -> {
-//            if (eventsResource == null || eventsResource.data == null) {
-//                return;
-//            }
-//
-//            showEvents(eventsResource.data);
-//            hideLoading();
-//        });
-    }
-
-    public void showRepositories(ArrayList<Repository> repositoryList) {
-        adapter.setData(repositoryList);
-        postNotifyDataSetChanged();
-    }
-
-    @Override
     protected int getLayoutId() {
         return R.layout.fragment_list;
     }
@@ -94,20 +88,55 @@ public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
 
     @Override
     protected void initFragment(Bundle savedInstanceState){
+        adapter = new RepositoriesAdapter(getActivity(), this);
         super.initFragment(savedInstanceState);
-//        setLoadMoreEnable(!RepositoriesType.COLLECTION.equals(mPresenter.getType()));
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
+
+        setLoadMoreEnable(true);
+        registerForContextMenu(recyclerView);
+
+        onLoadData();
     }
+
+    @Override
+    protected void onLoadData() {
+        LoadPage();
+    }
+
 
     @Override
     protected void onReLoadData() {
-//        mPresenter.loadRepositories(true, 1);
+        LoadPage();
     }
 
     @Override
+    protected void onLoadMore() {
+        super.onLoadMore();
+        LoadPage();
+    }
+
+    public void showRepositories(List<Repository> repositoryList) {
+        adapter.setData(repositoryList);
+        postNotifyDataSetChanged();
+    }
+
+
+    private void LoadPage() {
+        LiveData<Resource<List<Repository>>> repos =  mainViewModel.loadMyRepos(getCurPage(), "", "", "");
+        repos.observe(this, reposResource -> {
+            if (reposResource == null || reposResource.data == null) {
+                return;
+            }
+
+            showRepositories(reposResource.data);
+            hideLoading();
+        });
+    }
+
+
+
+    @Override
     protected String getEmptyTip() {
-//        if(RepositoriesType.TRENDING.equals(mPresenter.getType())){
-//            return String.format(getString(R.string.no_trending_repos), mPresenter.getLanguage().getName());
-//        }
         return getString(R.string.no_repository);
     }
 
@@ -123,12 +152,6 @@ public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
 //        } else {
 //            RepositoryActivity.show(getActivity(), adapter.getData().get(position));
 //        }
-    }
-
-    @Override
-    protected void onLoadMore(int page) {
-        super.onLoadMore(page);
-//        mPresenter.loadRepositories(false, page);
     }
 
     @Override

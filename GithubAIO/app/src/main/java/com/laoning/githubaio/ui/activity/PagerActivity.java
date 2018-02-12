@@ -2,14 +2,21 @@
 
 package com.laoning.githubaio.ui.activity;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.View;
 
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.ui.adapter.FragmentViewPagerAdapter;
@@ -28,6 +35,8 @@ public abstract class PagerActivity extends BaseActivity implements ViewPager.On
 
     @BindView(R.id.view_pager) protected ViewPager viewPager;
     @BindView(R.id.tab_layout) protected TabLayout tabLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar_layout) CollapsingToolbarLayout toolbarLayout;
 
     private ArrayList<Fragment> fragments ;
 
@@ -41,10 +50,22 @@ public abstract class PagerActivity extends BaseActivity implements ViewPager.On
         initView(savedInstanceState);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
+
     protected void initView(Bundle savedInstanceState) {
         pagerAdapter =  new FragmentViewPagerAdapter(getSupportFragmentManager());
         viewPager.addOnPageChangeListener(this);
         tabLayout.addOnTabSelectedListener(this);
+        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
@@ -83,11 +104,7 @@ public abstract class PagerActivity extends BaseActivity implements ViewPager.On
 
     protected abstract int getContentView();
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
+
 
     protected boolean onMainKeyDown(int keyCode, KeyEvent event){
         return super.onKeyDown(keyCode, event);
@@ -160,5 +177,52 @@ public abstract class PagerActivity extends BaseActivity implements ViewPager.On
 
     protected abstract int getFragmentPosition(Fragment fragment);
 
+
+    protected void setToolbarScrollAble(boolean scrollAble) {
+        if(toolbar == null) return;
+        int flags = scrollAble ? (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+                | AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP) : 0;
+        AppBarLayout.LayoutParams layoutParams = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        layoutParams.setScrollFlags(flags);
+        toolbar.setLayoutParams(layoutParams);
+    }
+
+    protected void setTransparentStatusBar(){
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+    }
+
+    protected void setToolbarBackEnable() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    protected void setToolbarTitle(String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+        if(toolbarLayout != null){
+            toolbarLayout.setTitle(title);
+        }
+    }
+
+    protected void setToolbarTitle(String title, String subTitle) {
+        setToolbarTitle(title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setSubtitle(subTitle);
+        }
+    }
+
+    protected void setToolbarSubTitle(String subTitle) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setSubtitle(subTitle);
+        }
+    }
 
 }

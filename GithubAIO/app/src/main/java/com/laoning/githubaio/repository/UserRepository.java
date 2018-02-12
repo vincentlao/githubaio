@@ -14,16 +14,14 @@ import javax.inject.Singleton;
  * Created by laoning on 01/02/2018.
  */
 
+@Singleton
 public class UserRepository {
-    private GithubDatabase githubDatabase;
-    private GithubService githubService;
-    private AppExecutors appExecutors;
+    @Inject  GithubDatabase githubDatabase;
+    @Inject  GithubService githubService;
+    @Inject  AppExecutors appExecutors;
 
     @Inject
-    public UserRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
-        this.githubDatabase = githubDatabase;
-        this.githubService = githubService;
-        this.appExecutors = appExecutors;
+    public UserRepository() {
     }
 
     public LiveData<User> findByLogin(String login) {

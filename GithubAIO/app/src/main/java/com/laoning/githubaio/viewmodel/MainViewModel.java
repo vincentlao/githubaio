@@ -6,8 +6,10 @@ import android.arch.lifecycle.ViewModel;
 import com.laoning.githubaio.AppExecutors;
 import com.laoning.githubaio.base.GlobalInfo;
 import com.laoning.githubaio.repository.EventRepository;
+import com.laoning.githubaio.repository.RepoRepository;
 import com.laoning.githubaio.repository.UserRepository;
 import com.laoning.githubaio.repository.entity.event.Event;
+import com.laoning.githubaio.repository.entity.repository.Repository;
 import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.repository.remote.base.Resource;
 
@@ -20,17 +22,17 @@ import javax.inject.Inject;
  */
 
 public class MainViewModel extends ViewModel {
-    private final EventRepository eventRepository;
-    private final UserRepository userRepository;
-    private final GlobalInfo globalInfo;
-    private final AppExecutors appExecutors;
+    @Inject
+    EventRepository eventRepository;
 
     @Inject
-    public MainViewModel(EventRepository eventRepository, UserRepository userRepository, GlobalInfo globalInfo, AppExecutors appExecutors) {
-        this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
-        this.globalInfo = globalInfo;
-        this.appExecutors = appExecutors;
+    UserRepository userRepository;
+
+    @Inject
+    RepoRepository repoRepository;
+
+    @Inject
+    public MainViewModel() {
     }
 
     public LiveData<Resource<List<Event>>> loadUserReceivedEvent(String user, int page) {
@@ -43,5 +45,9 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<User> findUserByLogin(String login) {
         return userRepository.findByLogin(login);
+    }
+
+    public LiveData<Resource<List<Repository>>> loadMyRepos(int page, String type, String sort, String direction) {
+        return repoRepository.loadMyRepos(page, type, sort, direction);
     }
 }

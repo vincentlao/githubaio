@@ -36,24 +36,6 @@ public class AppModule {
 
     @Provides
     @Singleton
-    GlobalInfo provideGlobalInfo() {
-        return new GlobalInfo();
-    }
-
-    @Provides
-    @Singleton
-    RequestInterceptor provideRequestInterceptor(GlobalInfo globalInfo) {
-        return new RequestInterceptor(globalInfo);
-    }
-
-    @Provides
-    @Singleton
-    public AppExecutors provideAppExecutors() {
-        return new AppExecutors();
-    }
-
-    @Provides
-    @Singleton
     OkHttpClient provideOkHttpClient(RequestInterceptor requestInterceptor) {
         OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
         okHttpClient.connectTimeout(TIMEOUT_IN_SEC, TimeUnit.SECONDS);
@@ -78,30 +60,5 @@ public class AppModule {
     @Singleton
     public GithubDatabase provideGithubDatabase(Application app) {
         return Room.databaseBuilder(app, GithubDatabase.class,"github_aio.db").build();
-    }
-
-    @Provides
-    @Singleton
-    public AccountRepository provideAccountRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
-        return new AccountRepository(githubDatabase, githubService, appExecutors);
-    }
-
-    @Provides
-    @Singleton
-    public EventRepository provideEventRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
-        return new EventRepository(githubDatabase, githubService, appExecutors);
-    }
-
-    @Provides
-    @Singleton
-    public RepoRepository provideRepoRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
-        return new RepoRepository(githubDatabase, githubService, appExecutors);
-    }
-
-
-    @Provides
-    @Singleton
-    public UserRepository provideUserRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
-        return new UserRepository(githubDatabase, githubService, appExecutors);
     }
 }

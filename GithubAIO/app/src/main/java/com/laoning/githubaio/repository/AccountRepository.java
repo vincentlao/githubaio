@@ -13,27 +13,28 @@ import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.repository.local.GithubDatabase;
 import com.laoning.githubaio.repository.remote.GithubService;
 import com.laoning.githubaio.repository.remote.base.ApiResponse;
-import com.laoning.githubaio.repository.remote.base.NetworkBoundResource;
+import com.laoning.githubaio.repository.remote.base.NetworkDBBoundResource;
 import com.laoning.githubaio.repository.remote.base.Resource;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by laoning on 01/02/2018.
  */
+
+@Singleton
 public class AccountRepository {
 
-    private final GithubDatabase githubDatabase;
-    private final GithubService githubService;
-    private final AppExecutors appExecutors;
+    @Inject GithubDatabase githubDatabase;
+    @Inject GithubService githubService;
+    @Inject AppExecutors appExecutors;
 
-    public AccountRepository(GithubDatabase githubDatabase, GithubService githubService, AppExecutors appExecutors) {
-        this.githubDatabase = githubDatabase;
-        this.githubService = githubService;
-        this.appExecutors = appExecutors;
+    @Inject
+    public AccountRepository() {
     }
 
     public LiveData<Account> getFirstAccountLocally() {
@@ -55,7 +56,7 @@ public class AccountRepository {
     }
 
     public LiveData<Resource<User>> loginUser(String login, String authentication) {
-        return new NetworkBoundResource<User, User>(appExecutors, true, true) {
+        return new NetworkDBBoundResource<User, User>(appExecutors, true, true) {
             @Override
             protected void saveCallResult(@NonNull User item) {
 
@@ -86,7 +87,7 @@ public class AccountRepository {
 
 
     public LiveData<Resource<User>> loadUser(String login) {
-        return new NetworkBoundResource<User, User>(appExecutors, false, false) {
+        return new NetworkDBBoundResource<User, User>(appExecutors, false, false) {
             @Override
             protected void saveCallResult(@NonNull User item) {
                 githubDatabase.userDao().addUser(item);
