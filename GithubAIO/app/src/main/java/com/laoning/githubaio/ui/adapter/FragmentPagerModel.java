@@ -8,6 +8,7 @@ import com.laoning.githubaio.R;
 import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.ui.fragment.BaseFragment;
 import com.laoning.githubaio.ui.fragment.EventFragment;
+import com.laoning.githubaio.ui.fragment.NotificationsFragment;
 import com.laoning.githubaio.ui.fragment.RepositoriesFragment;
 
 import java.util.ArrayList;
@@ -116,17 +117,13 @@ public class FragmentPagerModel {
 //        ));
 //    }
 //
-//    public static List<FragmentPagerModel> createNotificationsPagerList(
-//            @NonNull Context context, @NonNull ArrayList<Fragment> fragments) {
-//        return setPagerFragmentFlag(Arrays.asList(
-//                new FragmentPagerModel(context.getString(R.string.unread),
-//                        getFragment(fragments, 0, () -> NotificationsFragment.create(NotificationsFragment.NotificationsType.Unread))),
-//                new FragmentPagerModel(context.getString(R.string.participating),
-//                        getFragment(fragments, 1, () -> NotificationsFragment.create(NotificationsFragment.NotificationsType.Participating))),
-//                new FragmentPagerModel(context.getString(R.string.all),
-//                        getFragment(fragments, 2, () -> NotificationsFragment.create(NotificationsFragment.NotificationsType.All)))
-//        ));
-//    }
+    public static List<FragmentPagerModel> createNotificationsPagerList(@NonNull Context context, @NonNull ArrayList<Fragment> fragments) {
+        return setPagerFragmentFlag(Arrays.asList(
+                new FragmentPagerModel(context.getString(R.string.unread), getFragment(fragments, 0, () -> NotificationsFragment.create(NotificationsFragment.NotificationsType.Unread))),
+                new FragmentPagerModel(context.getString(R.string.participating), getFragment(fragments, 1, () -> NotificationsFragment.create(NotificationsFragment.NotificationsType.Participating))),
+                new FragmentPagerModel(context.getString(R.string.all), getFragment(fragments, 2, () -> NotificationsFragment.create(NotificationsFragment.NotificationsType.All)))
+        ));
+    }
 //
 //    public static List<FragmentPagerModel> createTracePagerList(
 //            @NonNull Context context, @NonNull ArrayList<Fragment> fragments) {

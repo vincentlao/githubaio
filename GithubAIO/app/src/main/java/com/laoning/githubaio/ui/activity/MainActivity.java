@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.StringUtils;
 import com.laoning.githubaio.repository.entity.Account;
+import com.laoning.githubaio.repository.entity.notification.Notification;
 import com.laoning.githubaio.repository.entity.repository.Repository;
 import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.ui.fragment.EventFragment;
@@ -243,6 +244,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_profile:
                 Account loginAccount = globalInfo.getCurrentUserAccount();
                 ProfileActivity.show(this, loginAccount.getName(),loginAccount.getAvatarUrl());
+                break;
+            case R.id.nav_notifications:
+                NotificationsActivity.show(this);
                 break;
             default:
                 break;

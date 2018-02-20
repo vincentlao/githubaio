@@ -36,7 +36,7 @@ public abstract class PagerActivity extends BaseActivity implements ViewPager.On
     @BindView(R.id.view_pager) protected ViewPager viewPager;
     @BindView(R.id.tab_layout) protected TabLayout tabLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.toolbar_layout) CollapsingToolbarLayout toolbarLayout;
+    @BindView(R.id.toolbar_layout) @Nullable CollapsingToolbarLayout toolbarLayout;
 
     private ArrayList<Fragment> fragments ;
 

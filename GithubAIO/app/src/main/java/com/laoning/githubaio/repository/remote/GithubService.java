@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.laoning.githubaio.repository.entity.event.Event;
+import com.laoning.githubaio.repository.entity.notification.Notification;
 import com.laoning.githubaio.repository.entity.repository.Repository;
 import com.laoning.githubaio.repository.entity.search.SearchResult;
 import com.laoning.githubaio.repository.entity.user.User;
@@ -16,10 +17,12 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -46,19 +49,19 @@ public interface GithubService {
 
 
     @NonNull @GET("user")
-    LiveData<Response<User>> getPersonInfo(
+    LiveData<ApiResponse<User>> getPersonInfo(
             @Header("forceNetWork") boolean forceNetWork
     );
 
     @NonNull @GET("users/{user}")
-    LiveData<Response<User>> getUser(
+    LiveData<ApiResponse<User>> getUser(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("user") String user
     );
 
 
     @NonNull @GET("user/following/{user}")
-    LiveData<Response<ResponseBody>> checkFollowing(
+    LiveData<ApiResponse<ResponseBody>> checkFollowing(
             @Path("user") String user
     );
 
@@ -66,30 +69,30 @@ public interface GithubService {
      * Check if one user follows another
      */
     @NonNull @GET("users/{user}/following/{targetUser}")
-    LiveData<Response<ResponseBody>> checkFollowing(
+    LiveData<ApiResponse<ResponseBody>> checkFollowing(
             @Path("user") String user,
             @Path("targetUser") String targetUser
     );
 
     @NonNull @PUT("user/following/{user}")
-    LiveData<Response<ResponseBody>> followUser(
+    LiveData<ApiResponse<ResponseBody>> followUser(
             @Path("user") String user
     );
 
     @NonNull @DELETE("user/following/{user}")
-    LiveData<Response<ResponseBody>> unfollowUser(
+    LiveData<ApiResponse<ResponseBody>> unfollowUser(
             @Path("user") String user
     );
 
     @NonNull @GET("users/{user}/followers")
-    LiveData<Response<ArrayList<User>>> getFollowers(
+    LiveData<ApiResponse<ArrayList<User>>> getFollowers(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("user") String user,
             @Query("page") int page
     );
 
     @NonNull @GET("users/{user}/following")
-    LiveData<Response<ArrayList<User>>> getFollowing(
+    LiveData<ApiResponse<ArrayList<User>>> getFollowing(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("user") String user,
             @Query("page") int page
@@ -99,7 +102,7 @@ public interface GithubService {
      * List events performed by a user
      */
     @NonNull @GET("users/{user}/events")
-    LiveData<Response<ArrayList<Event>>> getUserEvents(
+    LiveData<ApiResponse<ArrayList<Event>>> getUserEvents(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("user") String user,
             @Query("page") int page
@@ -109,27 +112,27 @@ public interface GithubService {
      * List github public events
      */
     @NonNull @GET("events")
-    LiveData<Response<ArrayList<Event>>> getPublicEvent(
+    LiveData<ApiResponse<ArrayList<Event>>> getPublicEvent(
             @Header("forceNetWork") boolean forceNetWork,
             @Query("page") int page
     );
 
     @NonNull @GET("users/{user}/received_events")
-    LiveData<Response<ArrayList<Event>>> getNewsEvent(
+    LiveData<ApiResponse<ArrayList<Event>>> getNewsEvent(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("user") String user,
             @Query("page") int page
     );
 
     @NonNull @GET("orgs/{org}/members")
-    LiveData<Response<ArrayList<User>>> getOrgMembers(
+    LiveData<ApiResponse<ArrayList<User>>> getOrgMembers(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("org") String org,
             @Query("page") int page
     );
 
     @NonNull @GET("users/{user}/orgs")
-    LiveData<Response<ArrayList<User>>> getUserOrgs(
+    LiveData<ApiResponse<ArrayList<User>>> getUserOrgs(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("user") String user
     );
@@ -191,7 +194,7 @@ public interface GithubService {
      * Check if you are starring a repository
      */
     @NonNull @GET("user/starred/{owner}/{repo}")
-    LiveData<Response<ResponseBody>> checkRepoStarred(
+    LiveData<ApiResponse<ResponseBody>> checkRepoStarred(
             @Path("owner") String owner,
             @Path("repo") String repo
     );
@@ -200,7 +203,7 @@ public interface GithubService {
      * Star a repository
      */
     @NonNull @PUT("user/starred/{owner}/{repo}")
-    LiveData<Response<ResponseBody>> starRepo(
+    LiveData<ApiResponse<ResponseBody>> starRepo(
             @Path("owner") String owner,
             @Path("repo") String repo
     );
@@ -209,37 +212,37 @@ public interface GithubService {
      * Unstar a repository
      */
     @NonNull @DELETE("user/starred/{owner}/{repo}")
-    LiveData<Response<ResponseBody>> unstarRepo(
+    LiveData<ApiResponse<ResponseBody>> unstarRepo(
             @Path("owner") String owner,
             @Path("repo") String repo
     );
 
     @NonNull @GET("user/subscriptions/{owner}/{repo}")
-    LiveData<Response<ResponseBody>> checkRepoWatched(
+    LiveData<ApiResponse<ResponseBody>> checkRepoWatched(
             @Path("owner") String owner,
             @Path("repo") String repo
     );
 
     @NonNull @PUT("user/subscriptions/{owner}/{repo}")
-    LiveData<Response<ResponseBody>> watchRepo(
+    LiveData<ApiResponse<ResponseBody>> watchRepo(
             @Path("owner") String owner,
             @Path("repo") String repo
     );
 
     @NonNull @DELETE("user/subscriptions/{owner}/{repo}")
-    LiveData<Response<ResponseBody>> unwatchRepo(
+    LiveData<ApiResponse<ResponseBody>> unwatchRepo(
             @Path("owner") String owner,
             @Path("repo") String repo
     );
 
     @NonNull @GET @Headers("Accept: application/vnd.github.html")
-    LiveData<Response<ResponseBody>> getFileAsHtmlStream(
+    LiveData<ApiResponse<ResponseBody>> getFileAsHtmlStream(
             @Header("forceNetWork") boolean forceNetWork,
             @Url String url
     );
 
     @NonNull @GET @Headers("Accept: application/vnd.github.VERSION.raw")
-    LiveData<Response<ResponseBody>> getFileAsStream(
+    LiveData<ApiResponse<ResponseBody>> getFileAsStream(
             @Header("forceNetWork") boolean forceNetWork,
             @Url String url
     );
@@ -265,7 +268,7 @@ public interface GithubService {
 //    );
 
     @NonNull @GET("repos/{owner}/{repo}/stargazers")
-    LiveData<Response<List<User>>> getStargazers(
+    LiveData<ApiResponse<List<User>>> getStargazers(
             @Header("forceNetWork") boolean forceNetWork,
             @Path(value = "owner") String owner,
             @Path(value = "repo") String repo,
@@ -273,7 +276,7 @@ public interface GithubService {
     );
 
     @NonNull @GET("repos/{owner}/{repo}/subscribers")
-    LiveData<Response<List<User>>> getWatchers(
+    LiveData<ApiResponse<List<User>>> getWatchers(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("owner") String owner,
             @Path("repo") String repo,
@@ -281,20 +284,20 @@ public interface GithubService {
     );
 
     @NonNull @GET("repos/{owner}/{repo}")
-    LiveData<Response<Repository>> getRepoInfo(
+    LiveData<ApiResponse<Repository>> getRepoInfo(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("owner") String owner,
             @Path("repo") String repo
     );
 
     @NonNull @POST("repos/{owner}/{repo}/forks")
-    LiveData<Response<Repository>> createFork(
+    LiveData<ApiResponse<Repository>> createFork(
             @Path("owner") String owner,
             @Path("repo") String repo
     );
 
     @NonNull @GET("repos/{owner}/{repo}/forks")
-    LiveData<Response<List<Repository>>> getForks(
+    LiveData<ApiResponse<List<Repository>>> getForks(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("owner") String owner,
             @Path("repo") String repo,
@@ -305,7 +308,7 @@ public interface GithubService {
      * List public events for a network of repositories
      */
     @NonNull @GET("networks/{owner}/{repo}/events")
-    LiveData<Response<List<Event>>> getRepoEvent(
+    LiveData<ApiResponse<List<Event>>> getRepoEvent(
             @Header("forceNetWork") boolean forceNetWork,
             @Path("owner") String owner,
             @Path("repo") String repo,
@@ -331,4 +334,22 @@ public interface GithubService {
 //    );
 
 
+    @NonNull @GET("notifications")
+    LiveData<ApiResponse<List<Notification>>> getMyNotifications(
+            @Query("all") boolean all,
+            @Query("participating") boolean participating
+    );
+
+    @NonNull @PATCH("notifications/threads/{threadId}")
+    LiveData<ApiResponse<ResponseBody>> markNotificationAsRead(@Path("threadId") String threadId);
+
+    @NonNull @PUT("notifications")
+    LiveData<ApiResponse<ResponseBody>> markAllNotificationsAsRead(@Body String last_read_at);
+
+    @NonNull @PUT("repos/{owner}/{repo}/notifications")
+    LiveData<ApiResponse<ResponseBody>> markRepoNotificationsAsRead(
+            @Body String last_read_at,
+            @Path("owner") String owner,
+            @Path("repo") String repo
+    );
 }

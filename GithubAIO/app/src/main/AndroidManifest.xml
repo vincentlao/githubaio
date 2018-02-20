@@ -41,6 +41,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.activity.ProfileActivity" android:theme="@style/AppTheme.NoActionBar" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.NotificationsActivity" android:theme="@style/AppTheme.NoActionBar" android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

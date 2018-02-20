@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.laoning.githubaio.ui.fragment.BaseFragment;
 import com.laoning.githubaio.ui.fragment.EventFragment;
+import com.laoning.githubaio.ui.fragment.NotificationsFragment;
 import com.laoning.githubaio.ui.fragment.RepositoriesFragment;
 
 import dagger.Module;
@@ -21,4 +22,7 @@ public abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract RepositoriesFragment repositoriesFragment();
+
+    @ContributesAndroidInjector
+    abstract NotificationsFragment notificationsFragment();
 }
