@@ -50,4 +50,8 @@ public class MainViewModel extends ViewModel {
     public LiveData<Resource<List<Repository>>> loadMyRepos(int page, String type, String sort, String direction) {
         return repoRepository.loadMyRepos(page, type, sort, direction);
     }
-}
+
+    public LiveData<Resource<List<Repository>>> loadStarredRepos(String user, int page, String sort, String direction) {
+        return repoRepository.loadStarredRepos(user, page, sort, direction);
+    }
+    }

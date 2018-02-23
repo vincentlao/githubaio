@@ -15,11 +15,13 @@ import android.view.View;
 import com.laoning.githubaio.R;
 import com.laoning.githubaio.base.BundleHelper;
 import com.laoning.githubaio.base.GlobalInfo;
+import com.laoning.githubaio.repository.entity.SearchModel;
 import com.laoning.githubaio.repository.entity.repository.Repository;
 import com.laoning.githubaio.repository.remote.base.Resource;
 import com.laoning.githubaio.ui.adapter.EventAdapter;
 import com.laoning.githubaio.ui.adapter.RepositoriesAdapter;
 import com.laoning.githubaio.viewmodel.MainViewModel;
+import com.laoning.githubaio.viewmodel.SearchViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +35,15 @@ import javax.inject.Inject;
 
 public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
     private MainViewModel mainViewModel;
+    private SearchViewModel searchViewModel;
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
     @Inject
     GlobalInfo globalInfo;
+
+    private RepositoriesType type;
+    private String user;
 
     public enum RepositoriesType{
         OWNED, PUBLIC, STARRED, TRENDING, SEARCH, FORKS, TRACE, BOOKMARK, COLLECTION, TOPIC
@@ -49,6 +55,16 @@ public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
         return fragment;
     }
 
+    public static RepositoriesFragment createForSearch(@NonNull SearchModel searchModel){
+        RepositoriesFragment fragment = new RepositoriesFragment();
+        fragment.setArguments(
+                BundleHelper.builder()
+                        .put("type", RepositoriesType.SEARCH)
+                        .put("searchModel", searchModel)
+                        .build()
+        );
+        return fragment;
+    }
 
     public static RepositoriesFragment createForForks(@NonNull String user, @NonNull String repo){
         RepositoriesFragment fragment = new RepositoriesFragment();
@@ -77,6 +93,10 @@ public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        Bundle bundle = getArguments();
+        type =( RepositoriesType)bundle.get("type");
+        user = bundle.getString("user");
     }
 
 
@@ -91,10 +111,16 @@ public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
         adapter = new RepositoriesAdapter(getActivity(), this);
         super.initFragment(savedInstanceState);
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
+        searchViewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
 
         setLoadMoreEnable(true);
         registerForContextMenu(recyclerView);
 
+    }
+
+    @Override
+    public void onFragmentShowed() {
+        super.onFragmentShowed();
         onLoadData();
     }
 
@@ -122,7 +148,21 @@ public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
 
 
     private void LoadPage() {
-        LiveData<Resource<List<Repository>>> repos =  mainViewModel.loadMyRepos(getCurPage(), "", "", "");
+        LiveData<Resource<List<Repository>>> repos =  null;
+        if (RepositoriesType.OWNED.equals(type)) {
+            repos = mainViewModel.loadMyRepos(getCurPage(), "", "", "");
+        } else if (RepositoriesType.STARRED.equals(type)) {
+            repos = mainViewModel.loadStarredRepos(user, getCurPage(), "", "");
+        } else if (RepositoriesType.SEARCH.equals(type)) {
+            Bundle bundle = getArguments();
+            SearchModel model = (SearchModel)bundle.get("searchModel");
+            repos = searchViewModel.searchRepos(model.getQuery(), model.getSort(), model.getOrder(), getCurPage());
+        }
+
+        if (repos == null) {
+            return;
+        }
+
         repos.observe(this, reposResource -> {
             if (reposResource == null || reposResource.data == null) {
                 return;
@@ -170,11 +210,4 @@ public class RepositoriesFragment extends ListFragment<RepositoriesAdapter>{
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onFragmentShowed() {
-        super.onFragmentShowed();
-//        if(mPresenter != null) mPresenter.prepareLoadData();
-    }
-
 }

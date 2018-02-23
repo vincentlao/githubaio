@@ -144,11 +144,11 @@ public abstract class PagerActivity extends BaseActivity implements ViewPager.On
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                if(isShow){
-//                    pagerAdapter.getPagerList().get(position).getFragment().onFragmentShowed();
-//                }else{
-//                    pagerAdapter.getPagerList().get(position).getFragment().onFragmentHided();
-//                }
+                if(isShow){
+                    pagerAdapter.getPagerList().get(position).getFragment().onFragmentShowed();
+                }else{
+                    pagerAdapter.getPagerList().get(position).getFragment().onFragmentHided();
+                }
             }
         }, delay);
     }

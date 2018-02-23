@@ -162,7 +162,6 @@ public interface GithubService {
      */
     @NonNull @GET("users/{user}/starred")
     LiveData<ApiResponse<List<Repository>>> getStarredRepos(
-            @Header("forceNetWork") boolean forceNetWork,
             @Path("user") @NonNull String user,
             @Query("page") int page,
             @Query("sort") String sort,

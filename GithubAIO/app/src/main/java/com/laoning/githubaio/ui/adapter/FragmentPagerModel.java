@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.laoning.githubaio.R;
+import com.laoning.githubaio.repository.entity.SearchModel;
 import com.laoning.githubaio.repository.entity.user.User;
 import com.laoning.githubaio.ui.fragment.BaseFragment;
 import com.laoning.githubaio.ui.fragment.EventFragment;
 import com.laoning.githubaio.ui.fragment.NotificationsFragment;
 import com.laoning.githubaio.ui.fragment.RepositoriesFragment;
+import com.laoning.githubaio.ui.fragment.UserListFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,16 +66,16 @@ public class FragmentPagerModel {
         list.add(new FragmentPagerModel(context.getString(R.string.starred), getFragment(fragments, 1, () -> RepositoriesFragment.create(RepositoriesFragment.RepositoriesType.STARRED, user.getLogin()))));
         return setPagerFragmentFlag(list);
     }
-//
-//    public static List<FragmentPagerModel> createSearchPagerList(@NonNull Context context
-//            , @NonNull final ArrayList<SearchModel> searchModels, @NonNull ArrayList<Fragment> fragments) {
-//        return setPagerFragmentFlag(Arrays.asList(
-//                new FragmentPagerModel(context.getString(R.string.repositories),
-//                        getFragment(fragments, 0, () -> RepositoriesFragment.createForSearch(searchModels.get(0)))),
-//                new FragmentPagerModel(context.getString(R.string.users),
-//                        getFragment(fragments, 1, () -> UserListFragment.createForSearch(searchModels.get(1))))
-//        ));
-//    }
+
+    public static List<FragmentPagerModel> createSearchPagerList(@NonNull Context context
+            , @NonNull final ArrayList<SearchModel> searchModels, @NonNull ArrayList<Fragment> fragments) {
+        return setPagerFragmentFlag(Arrays.asList(
+                new FragmentPagerModel(context.getString(R.string.repositories),
+                        getFragment(fragments, 0, () -> RepositoriesFragment.createForSearch(searchModels.get(0)))),
+                new FragmentPagerModel(context.getString(R.string.users),
+                        getFragment(fragments, 1, () -> UserListFragment.createForSearch(searchModels.get(1))))
+        ));
+    }
 //
 //    public static List<FragmentPagerModel> createTrendingPagerList(
 //            @NonNull Context context, @NonNull ArrayList<Fragment> fragments) {

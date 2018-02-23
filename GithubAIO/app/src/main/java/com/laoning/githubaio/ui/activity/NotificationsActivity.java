@@ -24,12 +24,6 @@ public class NotificationsActivity extends PagerActivity {
         activity.startActivity(intent);
     }
 
-//    @Override
-//    protected void initActivity() {
-//        super.initActivity();
-//        pagerAdapter =  new FragmentViewPagerAdapter(getSupportFragmentManager());
-//    }
-
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);

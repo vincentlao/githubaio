@@ -80,7 +80,7 @@ public class StringUtils {
     }
 
     public static String getDateStr(@NonNull Date date){
-        Locale locale = AppUtils.getLocale(PreferenceManager.getDefaultSharedPreferences(GithubAioApp.getApp()).getString(LANGUAGE, "en"));
+        Locale locale = AppUtils.getLocale(PreferenceManager.getDefaultSharedPreferences(GithubAioApp.get()).getString(LANGUAGE, "en"));
         String regex = DATE_REGEX_MAP.containsKey(locale) ? DATE_REGEX_MAP.get(locale) : "yyyy-MM-dd";
         SimpleDateFormat format = new SimpleDateFormat(regex, locale);
         return format.format(date);

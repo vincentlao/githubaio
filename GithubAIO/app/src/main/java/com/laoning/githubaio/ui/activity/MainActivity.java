@@ -146,6 +146,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             isExist = false;
             showFragment = getFragment(itemId);
         }
+
+        if (showFragment == null) {
+            return;
+        }
+
         if (showFragment.isVisible()) {
             return;
         }
@@ -165,6 +170,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 return EventFragment.create();
             case R.id.nav_owned:
                 return RepositoriesFragment.create(RepositoriesFragment.RepositoriesType.OWNED, globalInfo.getCurrentUserAccount().getName());
+            case R.id.nav_starred:
+                return RepositoriesFragment.create(RepositoriesFragment.RepositoriesType.STARRED, globalInfo.getCurrentUserAccount().getName());
         }
         return null;
     }
@@ -247,6 +254,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.nav_notifications:
                 NotificationsActivity.show(this);
+                break;
+            case R.id.nav_search:
+                SearchActivity.show(this);
                 break;
             default:
                 break;

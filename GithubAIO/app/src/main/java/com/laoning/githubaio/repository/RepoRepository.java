@@ -46,9 +46,29 @@ public class RepoRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<List<Repository>>> createCall() {
-                return githubService.getUserRepos(1, type, sort, direction);
+                return githubService.getUserRepos(page, type, sort, direction);
             }
         }.asLiveData();
     }
 
+
+    public LiveData<Resource<List<Repository>>> loadStarredRepos(String user, int page, String sort, String direction) {
+        return new NetworkBoundResource<List<Repository>, List<Repository>>(appExecutors) {
+            @Override
+            protected List<Repository> processResponse(ApiResponse<List<Repository>> response) {
+                return response.body;
+            }
+
+
+            protected void saveCallResult(@NonNull List<Repository> result) {
+
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<List<Repository>>> createCall() {
+                return githubService.getStarredRepos(user, page, sort, direction);
+            }
+        }.asLiveData();
+    }
 }

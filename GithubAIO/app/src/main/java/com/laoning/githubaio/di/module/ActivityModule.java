@@ -4,6 +4,7 @@ import com.laoning.githubaio.ui.activity.LoginActivity;
 import com.laoning.githubaio.ui.activity.MainActivity;
 import com.laoning.githubaio.ui.activity.NotificationsActivity;
 import com.laoning.githubaio.ui.activity.ProfileActivity;
+import com.laoning.githubaio.ui.activity.SearchActivity;
 import com.laoning.githubaio.ui.activity.SplashActivity;
 
 import dagger.Module;
@@ -27,6 +28,9 @@ public abstract class ActivityModule {
 
     @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
     abstract ProfileActivity profileActivity();
+
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
+    abstract SearchActivity searchActivity();
 
     @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
     abstract NotificationsActivity notificationsActivity();

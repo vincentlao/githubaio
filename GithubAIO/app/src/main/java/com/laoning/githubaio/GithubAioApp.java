@@ -30,7 +30,7 @@ public class GithubAioApp extends Application implements HasActivityInjector {
         app = this;
     }
 
-    public static GithubAioApp getApp() {
+    public static GithubAioApp get() {
         return app;
     }
 
